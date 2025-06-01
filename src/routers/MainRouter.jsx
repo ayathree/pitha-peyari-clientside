@@ -70,14 +70,14 @@ const MainRouter = createBrowserRouter([
                 element:<ManageOrder></ManageOrder>
             },
             {
-                path:'/viewUser/:email',
+                path:'/viewUser/:id',
                 element:<ViewUser></ViewUser>,
-                loader:({params})=>fetch(`${import.meta.env.VITE_API_URL}/orderData/${params.email}`)
+                loader:({params})=>fetch(`${import.meta.env.VITE_API_URL}/orderData/${params.id}`)
             },
             {
-                path:'/orderReceipt/:email',
+                path:'/orderReceipt/:id',
                 element:<OrderReceipt></OrderReceipt>,
-                loader:({params})=>fetch(`${import.meta.env.VITE_API_URL}/orderData/${params.email}`)
+                loader:({params})=>fetch(`${import.meta.env.VITE_API_URL}/orderData/${params.id}`)
             },
             {
                 path:'/manageUser',
