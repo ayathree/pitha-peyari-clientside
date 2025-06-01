@@ -85,7 +85,8 @@ useEffect(() => {
                                 <Link to={'/myCart'}><li className="justify-between">MyCart</li></Link>
                                 <Link to={'/addProduct'}><li className="justify-between">Add Product</li></Link>
                                 <Link to={'/manageOrder'}><li className="justify-between">Manage Order</li></Link>
-                                 <Link to={'/manageUser'}><li className="justify-between">Manage User</li></Link>
+                                 
+                                 <Link to={'/manageUser'}><li className="justify-between">Dashboard</li></Link>
                                 
                                
                                 <li className="cursor-pointer" onClick={logOut}>Logout</li>
