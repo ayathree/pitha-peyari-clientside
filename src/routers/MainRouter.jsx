@@ -19,6 +19,8 @@ import UpdateUserOrder from '../pages/userPages/UpdateUserOrder';
 import ItemDetails from '../pages/publicPages/ItemDetails';
 import ManageOrder from '../pages/adminPages/ManageOrder';
 import ManageUser from '../pages/adminPages/ManageUser';
+import ViewUser from '../pages/adminPages/ViewUser';
+import OrderReceipt from '../pages/adminPages/OrderReceipt';
 
 const MainRouter = createBrowserRouter([
     {
@@ -66,6 +68,16 @@ const MainRouter = createBrowserRouter([
             {
                 path:'/manageOrder',
                 element:<ManageOrder></ManageOrder>
+            },
+            {
+                path:'/viewUser/:email',
+                element:<ViewUser></ViewUser>,
+                loader:({params})=>fetch(`${import.meta.env.VITE_API_URL}/orderData/${params.email}`)
+            },
+            {
+                path:'/orderReceipt/:email',
+                element:<OrderReceipt></OrderReceipt>,
+                loader:({params})=>fetch(`${import.meta.env.VITE_API_URL}/orderData/${params.email}`)
             },
             {
                 path:'/manageUser',
