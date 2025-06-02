@@ -9,51 +9,49 @@ const OrderReceipt = () => {
     const generatePDF = () => {
         const doc = new jsPDF();
 
-        // Title
-        doc.setFontSize(18);
-        doc.setTextColor(40, 40, 40);
+        //  Set initial styles
+doc.setFont('helvetica');
+doc.setFontSize(12);
+
+// Title
+doc.setFontSize(16);
+doc.setFont('helvetica', 'bold');
         doc.text(`Pitha Peyari Order Receipt for ${item.customerInfo.name} `, 105, 20, { align: 'center' });
 
-        let yPos = 40; // Vertical position tracker
+       // Reset font for body
+doc.setFontSize(12);
+doc.setFont('helvetica', 'normal');
 
-       
-            // // Order Header
-            doc.setFontSize(14);
-            doc.text(`Order of ${item.customerInfo.name}`, 14, yPos);
-            
-            // Customer Info
-            doc.setFontSize(12);
-            doc.text(`Customer Name : ${item.customerInfo.name || "N/A"}`, 14, yPos + 10);
-            doc.text(`City : ${item.customerInfo.city}`, 14, yPos + 20);
+// Customer information section
+let yPos = 40;
+doc.text(`Customer Name: ${item.customerInfo?.name || "N/A"}`, 20, yPos);
+doc.text(`Address: ${item.customerInfo?.address || "N/A"}`, 20, yPos + 10);
+doc.text(`Phone: ${item.customerInfo?.phone || "N/A"}`, 20, yPos + 20);
 
-            // Products Table
-            doc.text("Items Ordered :", 14, yPos + 30);
-            
-            // Simple Table-like Structure
-            item.products.forEach((product, pIndex) => {
-                doc.text(
-                    `- ${product.name} (${product.quantity}) -  Price: ${product.price || "N/A"} BDT`,
-                    20,
-                    yPos + 40 + (pIndex * 10)
-                );
-            });
+// Format date properly
+const orderDate = item.orderDetails?.date ? 
+  new Date(item.orderDetails.date).toLocaleDateString() : "N/A";
+doc.text(`Order Date: ${orderDate}`, 20, yPos + 30);
 
-            // Total Amount
-            doc.setFontSize(12);
-            doc.text(
-                `Total Price: ${item.orderDetails.total} BDT`,
-                14,
-                yPos + 40 + (item.products.length * 10)
-            );
+// Payment method
+doc.text(`Payment Method: ${item.orderDetails?.method || "N/A"}`, 20, yPos + 40);
 
-            yPos += 60 + (item.products.length * 10); // Adjust for next order
+// Pricing section with proper alignment
+yPos += 60;
+doc.setFont('helvetica', 'bold');
+doc.text('Order Summary', 20, yPos);
+doc.setFont('helvetica', 'normal');
 
-            // Add new page if needed
-            if (yPos > 250 && item.index <item.length - 1) {
-                doc.addPage();
-                yPos = 20;
-            }
-        ;
+// Format currency values
+const formatCurrency = (amount) => isNaN(amount) ? "0 BDT" : `${amount} BDT`;
+
+doc.text(`Subtotal: ${formatCurrency(item.orderDetails?.subtotal)}`, 20, yPos + 10);
+doc.text(`Shipping Fee: ${formatCurrency(item.orderDetails?.shippingFee)}`, 20, yPos + 20);
+doc.text(`Discount: ${formatCurrency(item.orderDetails?.discount)}`, 20, yPos + 30);
+
+// Total with emphasis
+doc.setFont('helvetica', 'bold');
+doc.text(`Total Price: ${formatCurrency(item.orderDetails?.total)}`, 20, yPos + 45);
 
         // Save the PDF
         doc.save(`order-receipt of ${item.customerInfo.name}.pdf`);
@@ -79,7 +77,15 @@ const OrderReceipt = () => {
                     </div>
 
                     <p className="mt-2 font-bold">
-                        Total: {item.orderDetails.total} BDT
+                        Sub Total: {item.orderDetails.subtotal} BDT
+                        <br />
+                        Shipping Fee: {item.orderDetails.shippingFee} BDT
+                        <br />
+                        Discount:  BDT
+                        <br />
+                        Grand Total: {item.orderDetails.total} BDT
+
+
                     </p>
                 </div>
             
