@@ -12,10 +12,15 @@ import { GoEye } from "react-icons/go";
 import { FaRegFileAlt } from "react-icons/fa";
 import { CgDetailsMore } from "react-icons/cg";
 import { Link } from "react-router";
+import Swal from "sweetalert2";
+// import { useEffect } from "react";
 
 
 const ManageOrder = () => {
     const{user}=useAuth()
+    // delete order
+
+
     //  tanstack query for get data
      const {data: orders=[],
          isLoading,
@@ -27,10 +32,8 @@ const ManageOrder = () => {
      })
      console.log(orders)
      console.log(isLoading);
-    // const [orders, setOrders]=useState([])
-    //  useEffect(()=>{
-    //         getData()
-    //     },[user])
+     
+    
         const getData = async ()=>{
             const{data}= await axios(`${import.meta.env.VITE_API_URL}/orderAdmin/${user?.email}`,
             )
@@ -38,7 +41,7 @@ const ManageOrder = () => {
             // setOrders(data)
             return data
         }
-        // console.log(orders);
+        
 
         // tanstack query for update or patch
         const {mutateAsync}=useMutation({
@@ -68,6 +71,42 @@ const ManageOrder = () => {
         if(isError || error) {
             console.log(isError,error);
         }
+
+         const handleDelete = (id) => {
+         Swal.fire({
+           title: "Are you sure?",
+           text: "You won't be able to revert this!",
+           icon: "warning",
+           showCancelButton: true,
+           confirmButtonColor: "#3085d6",
+           cancelButtonColor: "#d33",
+           confirmButtonText: "Yes, delete it!"
+         }).then(async (result) => {
+           if (result.isConfirmed) {
+             try {
+                // Optimistically remove from UI
+            const previousOrders = orders;
+            console.log(previousOrders);
+               await axios.delete(`${import.meta.env.VITE_API_URL}/orderData/${id}`);
+               
+               await Swal.fire({
+                 title: "Deleted!",
+                 text: "Your product has been deleted.",
+                 icon: "success"
+               });
+               
+               // Refresh data
+        await refetch();
+             } catch (err) {
+               await Swal.fire({
+                 title: "Error!",
+                 text: err.response?.data?.message || "Failed to delete product",
+                 icon: "error"
+               });
+             }
+           }
+         });
+       };  
 
     return (
         <div>
@@ -142,17 +181,14 @@ const ManageOrder = () => {
                                                       Delivered
                                                        
                                                     </button>
-                                                     <button onClick={()=> handleStatus(order._id,order.orderDetails.status, 'Return')}  className="text-gray-500 transition-colors duration-200 dark:hover:text-red-500 dark:text-gray-300 hover:text-red-800 focus:outline-none btn" >
-                                                      Return
-                                                       
-                                                    </button>
+                                                    
                                                 
                                             </td>
                                        
 <td className="px-4 py-4 text-sm whitespace-nowrap">
                                                 <div className="flex items-center gap-x-6">
                                                     <Link to={`/viewUser/${order._id}`}>
-                                                    <button   className="text-gray-500 transition-colors duration-200 dark:hover:text-red-500 dark:text-gray-300 hover:text-red-500 focus:outline-none" data-tooltip-id="my-tooltip" data-tooltip-content="View User"
+                                                    <button   className="text-gray-500 transition-colors duration-200 dark:hover:text-red-500 dark:text-gray-300 hover:text-red-500 focus:outline-none" data-tooltip-id="my-tooltip" data-tooltip-content="View Summary"
 >
                                                         <GoEye className="text-2xl"  />
                                                         <Tooltip 
@@ -172,7 +208,7 @@ const ManageOrder = () => {
                                                          className="!bg-gray-800 !text-xs"
                                                        />
                                                     </button></Link>
-                                                    <button onClick={''}  className="text-gray-500 transition-colors duration-200 dark:hover:text-red-500 dark:text-gray-300 hover:text-red-500 focus:outline-none" data-tooltip-id="my-tooltip" data-tooltip-content="Order Summary">
+                                                    {/* <button onClick={''}  className="text-gray-500 transition-colors duration-200 dark:hover:text-red-500 dark:text-gray-300 hover:text-red-500 focus:outline-none" data-tooltip-id="my-tooltip" data-tooltip-content="Order Summary">
                                                        <CgDetailsMore className="text-2xl"/>
                                                        <Tooltip 
                                                          id="my-tooltip" 
@@ -180,7 +216,7 @@ const ManageOrder = () => {
                                                          effect="solid"
                                                          className="!bg-gray-800 !text-xs"
                                                        />
-                                                    </button>
+                                                    </button> */}
                                                     
                                                 </div>
                                             </td>
@@ -195,17 +231,14 @@ const ManageOrder = () => {
                                                order.orderDetails.status === 'Shipped' && 'text-blue-600 '}
                                               ${
                                                order.orderDetails.status === 'Delivered' && 'text-green-600 '           
-                                              }  ${
-                                               order.orderDetails.status === 'Return' && 'text-red-600 '
-           
-                                              } ` }>
+                                              }` }>
                                            {order.orderDetails.status}
                                               </p>
                                            </div>
                                        </td>
                                        
                                        <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                                        <button disabled={order.orderDetails.status !== 'Delivered'} className="disabled:bg-slate-200 disabled:text-slate-500 hover:text-red-600">
+                                        <button onClick={()=> handleDelete(order._id)} disabled={order.orderDetails.status !== 'Delivered'} className="disabled:bg-slate-500 disabled:text-slate-500 hover:text-red-600">
                                             <MdDelete className="text-2xl"/>
                                         </button>
                                        </td>

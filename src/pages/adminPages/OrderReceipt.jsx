@@ -3,7 +3,8 @@ import { useLoaderData } from "react-router";
 
 
 const OrderReceipt = () => {
-    const items = useLoaderData()
+    const item = useLoaderData()
+    console.log(item);
 
     const generatePDF = () => {
         const doc = new jsPDF();
@@ -11,25 +12,25 @@ const OrderReceipt = () => {
         // Title
         doc.setFontSize(18);
         doc.setTextColor(40, 40, 40);
-        doc.text(`Pitha Peyari Order Receipt for ${items.map(item=>(item.customerInfo.name))} `, 105, 20, { align: 'center' });
+        doc.text(`Pitha Peyari Order Receipt for ${item.customerInfo.name} `, 105, 20, { align: 'center' });
 
         let yPos = 40; // Vertical position tracker
 
-       items.forEach((order, index) => {
-            // Order Header
+       
+            // // Order Header
             doc.setFontSize(14);
-            doc.text(`Order #${index + 1}`, 14, yPos);
+            doc.text(`Order of ${item.customerInfo.name}`, 14, yPos);
             
             // Customer Info
             doc.setFontSize(12);
-            doc.text(`Customer: ${order.customerInfo.name || "N/A"}`, 14, yPos + 10);
-            doc.text(`City: ${order.customerInfo.city}`, 14, yPos + 20);
+            doc.text(`Customer Name : ${item.customerInfo.name || "N/A"}`, 14, yPos + 10);
+            doc.text(`City : ${item.customerInfo.city}`, 14, yPos + 20);
 
             // Products Table
-            doc.text("Items Ordered:", 14, yPos + 30);
+            doc.text("Items Ordered :", 14, yPos + 30);
             
             // Simple Table-like Structure
-            order.products.forEach((product, pIndex) => {
+            item.products.forEach((product, pIndex) => {
                 doc.text(
                     `- ${product.name} (${product.quantity}) -  Price: ${product.price || "N/A"} BDT`,
                     20,
@@ -40,36 +41,36 @@ const OrderReceipt = () => {
             // Total Amount
             doc.setFontSize(12);
             doc.text(
-                `Total Price: ${order.orderDetails.total} BDT`,
+                `Total Price: ${item.orderDetails.total} BDT`,
                 14,
-                yPos + 40 + (order.products.length * 10)
+                yPos + 40 + (item.products.length * 10)
             );
 
-            yPos += 60 + (order.products.length * 10); // Adjust for next order
+            yPos += 60 + (item.products.length * 10); // Adjust for next order
 
             // Add new page if needed
-            if (yPos > 250 && index <items.length - 1) {
+            if (yPos > 250 && item.index <item.length - 1) {
                 doc.addPage();
                 yPos = 20;
             }
-        });
+        ;
 
         // Save the PDF
-        doc.save(`order-receipt of ${items.map(item=>(item.customerInfo.name))}.pdf`);
+        doc.save(`order-receipt of ${item.customerInfo.name}.pdf`);
     };
     return (
         <div>
-            {items.map((order) => (
-                <div key={order._id} className="mb-8 p-4 border rounded-lg">
+            
+                <div className="mb-8 p-4 border rounded-lg">
                     <h2 className="text-lg font-semibold">
-                        Order for {order.customerInfo.name}
+                        Order for {item.customerInfo.name}
                     </h2>
-                    <p>City: {order.customerInfo.city}</p>
+                    <p>City: {item.customerInfo.city}</p>
                     
                     <div className="mt-3">
                         <h3 className="font-medium">Items:</h3>
                         <ul className="list-disc pl-5">
-                            {order.products.map((product) => (
+                            {item.products.map((product) => (
                                 <li key={product._id}>
                                     {product.name} ({product.quantity})
                                 </li>
@@ -78,10 +79,10 @@ const OrderReceipt = () => {
                     </div>
 
                     <p className="mt-2 font-bold">
-                        Total: {order.orderDetails.total} BDT
+                        Total: {item.orderDetails.total} BDT
                     </p>
                 </div>
-            ))}
+            
 
             <button onClick={generatePDF} className="btn">Download Pdf</button>
         </div>

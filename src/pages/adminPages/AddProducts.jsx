@@ -2,21 +2,44 @@ import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
 import { Link } from "react-router";
+import { useEffect, useState } from "react";
 
 
 const AddProducts = () => {
      const {user}= useAuth()
+     const [showPrice, setShowPrice] = useState(0);
+  const [offerPrice, setOfferPrice] = useState(0);
+  const [saveMoney, setSaveMoney] = useState(0);
+  const [discount, setDiscount] = useState(0);
+
+  // Calculate whenever prices change
+  useEffect(() => {
+    if (showPrice > 0 && offerPrice > 0) {
+      const savings = showPrice - offerPrice;
+      setSaveMoney(savings);
+      
+      const discountPercent = Math.round((savings / showPrice) * 100);
+      setDiscount(discountPercent);
+    } else {
+      setSaveMoney(0);
+      setDiscount(0);
+    }
+  }, [showPrice, offerPrice]);
         
         const handleFormSubmission=async e=>{
             e.preventDefault()
             const form = e.target
             const title= form.title.value
-            const price = form.price.value
+            // const price = form.price.value
             const description = form.description.value  
             const imageUrl = form.imageUrl.value 
             const adminEmail = user?.email
+            const fakePrice = showPrice
+            const mainPrice = offerPrice
+            const customerSave = saveMoney
+            const totalDiscount = discount 
             // const totalOrder = 0
-            const productData = {title,price,description,imageUrl,adminEmail}
+            const productData = {title,description,imageUrl,adminEmail,fakePrice,mainPrice,customerSave,totalDiscount}
             console.table(productData)
     
             try{
@@ -57,11 +80,42 @@ const AddProducts = () => {
                 <label className="text-gray-700 dark:text-gray-200" for="password">image</label>
                 <input name="imageUrl"  type="url" className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring" required/>
             </div>
+             <div>
+                <label className="text-gray-700 dark:text-gray-200" for="passwordConfirmation">Show Price</label>
+                <input  type="number"
+            min="0"
+            value={showPrice}
+            onChange={(e) => setShowPrice(Number(e.target.value))} className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring" required/>
+            </div>
 
             <div>
-                <label className="text-gray-700 dark:text-gray-200" for="passwordConfirmation">Price</label>
-                <input  name="price" type="number" className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring" required/>
+                <label className="text-gray-700 dark:text-gray-200" for="passwordConfirmation">Offer Price</label>
+                <input type="number"
+            min="0"
+            value={offerPrice}
+            onChange={(e) => setOfferPrice(Number(e.target.value))} className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring" required/>
             </div>
+            {/* Auto-calculated Save Money */}
+             <div className="bg-blue-50 p-3 rounded-md">
+          <p className="text-sm text-gray-500">Customers Save</p>
+          <p className="text-xl font-semibold text-blue-700">
+            ৳{saveMoney.toFixed(2)}
+          </p>
+        </div>
+
+        {/* Auto-calculated Discount */}
+        <div className="bg-green-50 p-3 rounded-md">
+          <p className="text-sm text-gray-500">Discount Percentage</p>
+          <p className="text-xl font-semibold text-green-700">
+            {discount}% OFF
+          </p>
+        </div>
+        {/* Validation */}
+      {offerPrice > showPrice && (
+        <p className="text-red-500 text-sm mt-2">
+          Warning: Offer price should be less than show price
+        </p>
+      )}
         </div>
 
         <div className="flex justify-end gap-2 mt-6">
