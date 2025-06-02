@@ -57,16 +57,19 @@ doc.text(`Total Price: ${formatCurrency(item.orderDetails?.total)}`, 20, yPos + 
         doc.save(`order-receipt of ${item.customerInfo.name}.pdf`);
     };
     return (
-        <div>
+        <div className="mt-20">
             
-                <div className="mb-8 p-4 border rounded-lg">
-                    <h2 className="text-lg font-semibold">
-                        Order for {item.customerInfo.name}
+                <div className="mb-8 p-4 border rounded-lg border-yellow-800 bg-amber-100">
+                    <h2 className=" font-bold text-2xl text-yellow-600 mb-2">
+                        Order for:
                     </h2>
-                    <p>City: {item.customerInfo.city}</p>
+                    <p><span className="font-bold text-xl">Customer:</span> {item.customerInfo.name}</p>
+                    <p><span className="font-bold text-xl">Phone:</span> {item.customerInfo.phone}</p>
+                    <p><span className="font-bold text-xl">Address:</span> {item.customerInfo.address}</p>
+                    <p><span className="font-bold text-xl">Method:</span> {item.orderDetails.method}</p>
                     
                     <div className="mt-3">
-                        <h3 className="font-medium">Items:</h3>
+                        <h3 className="font-bold text-xl text-yellow-600 ">Ordered Items:</h3>
                         <ul className="list-disc pl-5">
                             {item.products.map((product) => (
                                 <li key={product._id}>
@@ -76,21 +79,23 @@ doc.text(`Total Price: ${formatCurrency(item.orderDetails?.total)}`, 20, yPos + 
                         </ul>
                     </div>
 
-                    <p className="mt-2 font-bold">
-                        Sub Total: {item.orderDetails.subtotal} BDT
-                        <br />
-                        Shipping Fee: {item.orderDetails.shippingFee} BDT
-                        <br />
-                        Discount:  BDT
-                        <br />
-                        Grand Total: {item.orderDetails.total} BDT
+                     <h3 className="font-bold text-xl mt-3 text-yellow-600">Order Details:</h3>
+
+                    <li >
+                        <span className=" font-bold">Sub Total:</span> {item.orderDetails.subtotal} BDT</li>
+                        
+                        <li><span className="font-bold">Shipping Fee:</span> {item.orderDetails.shippingFee} BDT</li>
+                        
+                        <li><span className=" font-bold">Discount:</span>  BDT</li>
+                        
+                       <li> <span className=" font-bold">Grand Total:</span> {item.orderDetails.total} BDT</li>
 
 
-                    </p>
+                    
                 </div>
             
 
-            <button onClick={generatePDF} className="btn">Download Pdf</button>
+            <button onClick={generatePDF} className="btn bg-yellow-600 hover:bg-amber-800 text-white">Download Pdf</button>
         </div>
     );
 };
