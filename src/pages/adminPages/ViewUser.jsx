@@ -11,7 +11,7 @@ const ViewUser = () => {
             <p><span className="font-bold text-xl">Customer Address:</span> {item.customerInfo.address}</p>
             <p><span className="font-bold text-xl">Phone:</span> {item.customerInfo.phone}</p>
             <p><span className="font-bold text-xl">City:</span> {item.customerInfo.city}</p>
-            <p><span className="font-bold text-xl">Zip Code:</span> {item.customerInfo.zipCode}</p>
+            {/* <p><span className="font-bold text-xl">Zip Code:</span> {item.customerInfo.zipCode}</p> */}
             <h1 className="underline text-2xl font-bold text-yellow-600 my-5">Items Details:</h1>
             <p>{item.products.map((product, index)=>(<li  key={product._id}>
                 <p><span className="font-bold text-xl text-yellow-600">Item No: {index + 1}</span> </p>
@@ -28,6 +28,7 @@ const ViewUser = () => {
             <p><span className="font-bold text-xl">Order Method:</span> {item.orderDetails.method}</p>
             <p><span className="font-bold text-xl">Status:</span> {item.orderDetails.status}</p>
             <p><span className="font-bold text-xl">Subtotal:</span> {item.orderDetails.subtotal} BDT</p>
+             <p><span className="font-bold text-xl">Discount:</span> {item.orderDetails.totalDiscounting.toFixed(2)} %</p>
             <p><span className="font-bold text-xl">Shipping Fee:</span> {item.orderDetails.shippingFee} BDT</p>
             <p><span className="font-bold text-xl">Grand Total:</span> {item.orderDetails.total} BDT</p>
             

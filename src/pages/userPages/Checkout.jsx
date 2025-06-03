@@ -12,8 +12,11 @@ const Checkout = () => {
     const navigate=useNavigate()
     const [startDate] = useState(new Date());
     const [items, setItems] = useState([]);
+    const[fakeTotal, setFakeTotal]=useState(0)
     const [subtotal, setSubtotal] = useState(0);
-const [shippingFee] = useState(120); // Made constant if not changing
+    const[customerSaving, setCustomerSaving] = useState(0)
+    const[totalDiscounting, setTotalDiscounting]=useState(0)
+const [shippingFee] = useState(80); // Made constant if not changing
 const [total, setTotal] = useState(0);
     // / Fetch cart data
     useEffect(() => {
@@ -70,6 +73,15 @@ useEffect(() => {
     (sum, item) => sum + (item.productPrice * item.quantity),
     0
   );
+  const calculatedFakeTotal = items.reduce(
+    (sum, item) => sum + (item.uiPrice * item.quantity),
+    0
+  );
+  const customerSaving = calculatedFakeTotal - calculatedSubtotal;
+  const totalDiscounting = (customerSaving / calculatedFakeTotal) * 100;
+  setCustomerSaving(customerSaving);
+  setTotalDiscounting(totalDiscounting);
+  setFakeTotal(calculatedFakeTotal);
   setSubtotal(calculatedSubtotal);
   setTotal(calculatedSubtotal + shippingFee);
 }, [items, shippingFee]);
@@ -106,7 +118,7 @@ const handleFormSubmission = async (e) => {
       address: form.address.value,
       phone: form.phone.value,
       city:form.city.value,
-      zipCode:form.zip.value,
+      
       email: user.email,
       
     },
@@ -117,13 +129,16 @@ const handleFormSubmission = async (e) => {
       status:'Pending',
       subtotal,
       shippingFee,
-      total
+      total,
+      totalDiscounting
+
     },
     products: items.map(item => ({
       id: item.cartProductId,
       name: item.addedProduct,
     //   brand: item.savedBrand,
       price: item.productPrice,
+      
       quantity: item.quantity,
       image: item.productImage,
       owner: item.owner
@@ -201,6 +216,7 @@ const handleFormSubmission = async (e) => {
                                         </td>
                                       
                                         <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">{item.productPrice} BDT</td>
+                                        {/* <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">{item.quantity}</td> */}
                                         <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">{item.quantity}</td>
                                         
             
@@ -235,14 +251,21 @@ const handleFormSubmission = async (e) => {
             {/* price count */}
             <div className="flex flex-row justify-end items-end gap-6  m-10">
                 <div>
-                    <p className="text-blue-600" >SubTotal</p>
+                  <p>SubTotal <span className="font-bold text-red-600 text-xl">(Without Offer)</span></p>
+                    <p className="text-blue-600 capitalize" >SubTotal <span className="font-bold text-green-600 text-xl">(with offer)</span></p>
                     <p className="text-green-600">Shipping Fee</p>
+                    <p className="text-purple-700">Save money</p>
                     <p className="text-red-600">Total</p>
+                    <p className="text-orange-600">Discount </p>
                 </div>
                 <div>
+                  <p>{fakeTotal.toLocaleString('en-US')} BDT</p>
                     <p className="text-blue-600">{subtotal.toLocaleString('en-US')} BDT</p>
                     <p className="text-green-600">{shippingFee.toLocaleString('en-US')} BDT</p>
+                     <p className="text-purple-700">{customerSaving.toLocaleString('en-US')} BDT</p>
+                    
                     <p className="text-red-600">{total.toLocaleString('en-US')} BDT</p>
+    <p className="text-orange-600">{totalDiscounting.toFixed(2)}%</p>
                 </div>
                 
 
@@ -279,25 +302,23 @@ const handleFormSubmission = async (e) => {
 
                 </select>
             </div>
-            <div>
-                <label className="text-yellow-600 font-bold text-lg dark:text-gray-200" >Zip Code</label>
-                <input name="zip" type="number" className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring" required/>
-            </div>
+            
 
             <div>
                 <label className="text-yellow-600 font-bold text-lg dark:text-gray-200">Order Date</label>
                 <DatePicker className='border p-2 rounded-md' selected={startDate}  />
             </div>
             <div>
-            <label className="text-gray-700 dark:text-gray-200">Payment Method <span className="text-green-700 font-bold">(Before pay please fill up the form)</span></label>
+            <label className="text-yellow-600 font-bold text-lg dark:text-gray-200">Method</label>
            <br />
            <div className="mt-2 flex items-center gap-3">
-           <button className="btn bg-yellow-500 text-white hover:bg-yellow-800" disabled>Online Pay</button>
+           
           
         <input 
           type="checkbox" 
           name="delivery" 
           value="Cash On Delivery" 
+          defaultChecked
           required
         //   onChange={() => handlePaymentMethodChange(false)}
         //   required={!useStripePayment} 

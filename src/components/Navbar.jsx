@@ -3,10 +3,15 @@ import { Link } from "react-router";
 import { AuthContext } from "../pages/authenticationPages/providers/AuthProvider";
 import { BsCartFill } from "react-icons/bs";
 import axios from "axios";
+import useAuth from "../hooks/useAuth";
+import useAdmin from "../hooks/useAdmin";
 
 
 const Navbar = () => {
-   const { user, logOut } = useContext(AuthContext); 
+  const{user}=useAuth()
+   const [isAdmin]=useAdmin()
+
+   const { logOut } = useContext(AuthContext); 
      const [carts, setCarts] = useState([]);
     useEffect(() => {
     if (user?.email) {  // Only run when user.email exists
@@ -50,11 +55,14 @@ useEffect(() => {
     <a class="text-3xl font-bold uppercase text-yellow-600">pitha peyari</a> 
   </div>
   <div className="navbar-center hidden lg:flex">
-    <ul className="menu menu-horizontal px-1 flex justify-center items-center gap-3">
-      <Link to={'/'}> <li>Home</li></Link>
+    <ul className="menu menu-horizontal px-1 flex justify-center items-center gap-3 text-xl">
+      <Link to={'/'}> <li className="hidden">Home</li></Link>
            <Link to={'/shop'}> <li>Shop</li></Link>
-            <Link to={'/about'}> <li>About Us</li></Link>
-              <Link to={'/contact'}><li>Contact Us</li></Link>
+            <Link to={'/about'}> <li className="hidden">About Us</li></Link>
+              <Link to={'/contact'}><li className="hidden">Contact Us</li></Link>
+              {
+                !user && !isAdmin && <Link to={'/login'}> <button className="font-bold text-yellow-600">Login</button></Link>
+              }
                {/* {!user?(<></>):( <Link to={'/addProduct'}><li>Add items</li></Link>)} */}
     </ul>
   </div>
@@ -64,9 +72,7 @@ useEffect(() => {
       <Link to={''}><a className="cursor-pointer text-3xl text-yellow-600"><BsCartFill/></a></Link>
       <div className=" absolute bottom-4 left-4 bg-black text-white rounded-full px-2 ">{carts.length}</div>
     </div>
-     {!user ? (
-                       <Link to={'/login'}> <button className="font-bold text-yellow-600">Login</button></Link>
-                    ) : (
+     {user && !isAdmin &&  (
                         <div className="dropdown dropdown-end">
                             <button 
                                 tabIndex={0} 
@@ -83,16 +89,40 @@ useEffect(() => {
                                 <Link to={'/myOrder'}><li className="justify-between">MyOrder</li></Link>
                                 <Link to={'/wishList'}><li className="justify-between">WishList</li></Link>
                                 <Link to={'/myCart'}><li className="justify-between">MyCart</li></Link>
-                                <Link to={'/addProduct'}><li className="justify-between">Add Product</li></Link>
-                                <Link to={'/manageOrder'}><li className="justify-between">Manage Order</li></Link>
-                                 
-                                 <Link to={'/manageUser'}><li className="justify-between">Dashboard</li></Link>
+                               
                                 
                                
                                 <li className="cursor-pointer" onClick={logOut}>Logout</li>
                             </ul>
                         </div>
                     )}
+
+
+      {user && isAdmin &&  (
+                        <div className="dropdown dropdown-end">
+                            <button 
+                                tabIndex={0} 
+                                role="button" 
+                                aria-label="User menu" 
+                                className="font-bold text-yellow-600">
+                                <div className="w-10 rounded-full">
+                                    <p>{user?.displayName}</p>
+                                </div>
+                            </button>
+                            <ul
+                                tabIndex={0}
+                                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1000] mt-3 w-52 p-2 shadow">
+                                
+                                <Link to={'/addProduct'}><li className="justify-between">Add Product</li></Link>
+                                <Link to={'/manageOrder'}><li className="justify-between">Manage Order</li></Link>
+                                 
+                                
+                                
+                               
+                                <li className="cursor-pointer" onClick={logOut}>Logout</li>
+                            </ul>
+                        </div>
+                    )}              
   </div>
 </div>
     );

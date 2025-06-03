@@ -1,10 +1,11 @@
 
 import { useEffect, useState } from "react";
-import { FaHeart } from "react-icons/fa";
+import { FaArrowRight, FaHeart } from "react-icons/fa";
 import useAuth from "../../hooks/useAuth";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Link } from "react-router";
+// import star from '../../../public/star.png'
 
 
 
@@ -36,7 +37,8 @@ const Shop = () => {
             customerEmail: user?.email,
           owner: product.adminEmail,
           addedProduct: product.title,
-          productPrice: product.price,
+          productPrice: product.mainPrice,
+          uiPrice: product.fakePrice,
           productImage: product.imageUrl,
           
         };
@@ -65,7 +67,8 @@ const Shop = () => {
             listerEmail: user?.email,
           productOwner: product.adminEmail,
           listedProduct: product.title,
-          productPrice: product.price,
+          productPrice: product.mainPrice,
+          faked: product.fakePrice,
           productImage: product.imageUrl,
           
         };
@@ -91,24 +94,27 @@ const Shop = () => {
              <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 justify-center items-center">
                {
                 items.map(item=>(
-                    <Link to={`/itemDetails/${item._id}`}> <div key={item._id} className="card bg-yellow-100 hover:bg-amber-200 shadow-lg ">
+                     <div key={item._id} className="card bg-yellow-100 hover:bg-amber-200 shadow-lg ">
   <figure className="relative">
     <img
       src={item.imageUrl}
       alt=""
-      className="rounded-t-xl w-full h-[40vh]" />
-      <p className="bg-yellow-500 font-bold absolute top-2 left-2 text-white px-2">{item.price} BDT</p>
+      className="rounded-t-xl w-full h-[40vh]  " />
+      
+      <p className=" font-bold absolute -top-2 -left-3 bg-amber-300 p-4 rounded-full text-red-600 text-center "><span className="text-xl">{item.totalDiscount}%</span> <br />discount</p>
   </figure>
   <div className="card-body items-center text-center">
     <h2 className="card-title">{item.title}</h2>
+    <p><span className="text-xl text-red-600">{item.fakePrice}</span> টাকার পণ্য এখন মাত্র <span className="text-xl text-red-600" >{item.mainPrice}</span> টাকায়, <span className="text-xl text-red-600">{item.customerSave}</span> টাকা সাশ্রয়</p>
     <FaHeart onClick={() => handleWish(item._id)} className="text-2xl text-yellow-600 hover:text-yellow-800 cursor-pointer" />
     
     <div className="card-actions">
       <button onClick={() => handleCart(item._id)} className="btn bg-yellow-600 capitalize text-white hover:bg-yellow-800">Add to cart</button>
-      <button className="btn bg-yellow-600 capitalize text-white hover:bg-yellow-800" disabled>Buy now</button>
+      <Link to={`/itemDetails/${item._id}`}><button className="btn bg-yellow-600 capitalize text-white hover:bg-yellow-800" ><FaArrowRight /></button> </Link>
     </div>
   </div>
-</div></Link>
+
+</div>
                 ))
                }
              </div>

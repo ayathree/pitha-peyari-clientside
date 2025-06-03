@@ -125,7 +125,7 @@ const MyCart = () => {
                                     
                                     <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Price</th>
                                      <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Select Quantity</th>
-                                    <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Quantity</th>
+                                    {/* <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Quantity</th> */}
         
         
                                   
@@ -166,14 +166,14 @@ const MyCart = () => {
                                     <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">{cart.productPrice} BDT</td>
                                     <td>
                                         <QuantityButton
-                                                        initialQuantity={cart.localQuantity}
+                                                        initialQuantity={cart.itemQuantity}
                                                         min={1}
                                                         max={10}
                                                         onQuantityChange={(newQty) => updateQuantity(cart._id, newQty)}
                                                         className="mt-2"
                                                     />
                                     </td>
-                                    <td className="px-4 py-4 text-lg text-gray-500 dark:text-gray-300 whitespace-nowrap"> {cart.localQuantity}</td>
+                                    {/* <td className="px-4 py-4 text-lg text-gray-500 dark:text-gray-300 whitespace-nowrap"> {cart.localQuantity}</td> */}
                                     
         
                                     

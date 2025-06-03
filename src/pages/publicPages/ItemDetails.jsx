@@ -6,12 +6,13 @@ import { useEffect } from "react";
 import axios from 'axios'
 import {Rating} from 'react-simple-star-rating'
 import { FaStar } from "react-icons/fa";
+import QuantityButton from "../../components/QuantityButton";
 
 const ItemDetails = () => {
     const itemData = useLoaderData()
     // console.log(itemData);
     const {
-        _id, title, price, description,imageUrl, adminEmail
+        _id, title, description,imageUrl, adminEmail,fakePrice,mainPrice,totalDiscount,customerSave
 
     }=itemData || {}
 
@@ -20,8 +21,8 @@ const ItemDetails = () => {
     const[products,setProducts]=useState([])
     const [showText, setShowText] = useState(false);
     const [rating, setRating] = useState(0);
-    const[reviews,setReviews]=useState([])
-
+    const[reviews,setReviews]=useState([]);
+    const [quantity, setQuantity] = useState({ localQuantity: 1 });
 
      
     const handleCart = async e =>{
@@ -33,25 +34,34 @@ const ItemDetails = () => {
         const customerEmail = user?.email;
         const owner = adminEmail;
         const addedProduct = title;
+       const itemQuantity = quantity.localQuantity;
         // const savedBrand = brand;
-        const productPrice = price;
+        const productPrice = mainPrice;
+        const uiPrice = fakePrice;
+        const discount = totalDiscount;
+        const savings = customerSave;
         const productImage = imageUrl;
         const savedData = {
-            cartProductId,customerEmail,owner, addedProduct, productPrice,productImage
+            cartProductId,customerEmail,owner, addedProduct,productImage, itemQuantity, productPrice,uiPrice,discount,savings
         }
 
         console.table(savedData)
 
         try{
             const {data}= await axios.post(`${import.meta.env.VITE_API_URL}/cart`, savedData)
+
             console.log(data)
+            setQuantity({
+                    ...data, // Spread the item data
+                    localQuantity: data.quantity || 1 // Initialize with stored quantity (or default to 1)
+});
             toast.success('added in cart')
            
             navigate('/myCart')
 
         }catch(err){
             console.log(err)
-            toast.error(err.message)
+            toast.error(err.response?.data)
             
         }
 
@@ -137,7 +147,7 @@ const ItemDetails = () => {
         }
 
     return (
-        <div className="mt-5">
+        <div className="mt-20">
            {/* product detail */}
          
            
@@ -149,17 +159,53 @@ const ItemDetails = () => {
                 {/* div 2 */}
                 <div  >
                 <div className="space-y-3">
+                 <div className="flex  gap-2">
+                   <p>Original Price : </p>
                  <div className="flex justify-center items-center gap-2 bg-yellow-600 text-white px-2 w-16 ">
-                     <p className="">{price} </p>
+                     <p className="">{fakePrice} </p>
                      <p>BDT</p>
                  </div>
-                  <p className="text-3xl capitalize font-bold ">{title}</p>
+                 </div>
+                 <div className="flex  gap-2">
+                   <p>Offer Price : </p>
+                 <div className="flex justify-center items-center gap-2 bg-yellow-600 text-white px-2 w-16 ">
+                     <p className="">{mainPrice} </p>
+                     <p>BDT</p>
+                 </div>
+                 </div>
+                 <div className="flex  gap-6 mb-6">
+                   <p>Save Money: </p>
+                 <div className="flex justify-center items-center gap-2 bg-red-400 text-white px-2 ">
+                     <p className="">{fakePrice} </p>
+                     <p>BDT</p>
+                     <p>-</p>
+                     <p>{mainPrice}</p>
+                     <p>BDT</p>
+                     <p>=</p>
+                     <p>{customerSave}</p>
+                     <p>BDT</p>
+                 </div>
+                 </div>
+                 <div className="flex items-center gap-3">
+                   <p className="text-3xl capitalize font-bold ">{title}</p>
+                  <p><span className="text-5xl capitalize font-bold text-red-600">{totalDiscount}%</span> Discount</p>
+                 </div>
                 <p className="text-lg capitalize font-bold text-yellow-600">{description}</p>
+                 <p className="text-3xl capitalize font-bold mt-3">Quantity:</p>
+                <QuantityButton 
+    initialQuantity={quantity.localQuantity || 1}
+    onQuantityChange={(newQuantity) => {
+      setQuantity(prev => ({ ...prev, localQuantity: newQuantity }));
+    }}
+    min={1}
+    max={10}
+    className="mt-2"
+  />
                 
                 
                 
                 <div>
-             <button  onClick={handleCart} className=" capitalize bg-yellow-600 text-white px-4 w-full py-2 text-xl font-semibold hover:bg-yellow-300">Add to cart</button>
+             <button  onClick={handleCart} className="mt-3 capitalize bg-yellow-600 text-white px-4 w-full py-2 text-xl font-semibold hover:bg-yellow-300">Add to cart</button>
            
            </div>
                 </div>

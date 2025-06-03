@@ -63,6 +63,7 @@ const WishList = () => {
               addedProduct: product.listedProduct,
             //   savedBrand: product.listedBrand,
               productPrice: product.productPrice,
+              uiPrice: product.faked,
               productImage: product.productImage,
               
             };

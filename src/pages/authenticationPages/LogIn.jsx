@@ -1,28 +1,72 @@
-import { useContext } from "react";
-import { Link, useNavigate } from "react-router";
+import { useContext, useState,} from "react";
+import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "./providers/AuthProvider";
 import toast from "react-hot-toast";
+import axios from "axios";
+// import useAdmin from "../../hooks/useAdmin";
 
 
 const LogIn = () => {
     const navigate = useNavigate()
-    const {signIn, google} =useContext(AuthContext)
+    const[registerError, setRegisterError]= useState('');
+    const[success, setSuccess] = useState('');
+    const {signIn, google,} =useContext(AuthContext)
+    // const [isAdmin] = useAdmin();
+     const location = useLocation();
+   const from = location.state?.from || '/'
+//     useEffect(() => {
+//   if (user && !isAdmin) {
+//     // Define your actual admin route patterns
+//     const adminRoutes = [
+//       '/addProduct',
+//       '/allProduct/:email',
+//       '/updateItem/:id',
+//       '/manageOrder',
+//       '/viewUser/:id',
+//       '/orderReceipt/:id',
+     
+//     ];
+
+//     const isRequestingAdminRoute = adminRoutes.some(route => 
+//       from.startsWith(route)
+//     );
+
+//     // Check if trying to access admin route without admin privileges
+//     if (isRequestingAdminRoute && !isAdmin) {
+//       navigate('/', { replace: true });
+//     }
+//     // Check if admin is trying to access non-admin routes
+//     else if (!isRequestingAdminRoute && isAdmin && from !== '/') {
+//       navigate('/', { replace: true }); 
+//     }
+//     // Otherwise go to requested page
+//     else {
+//       navigate(from, { replace: true });
+//     }
+//   }
+// }, [user, isAdmin, navigate, from]);
     // google signin
-    const handleGoogleLogin= async()=>{
-        try{
-            await google()
-            toast.success('Sign in successfully')
-            navigate('/')
-
-
-        }
-        catch(err){
-            console.log(err)
-            toast.error(err?.message)
-        }
-
-
+   const handleGoogleLogin = async () => {
+  try {
+    const result = await google();
+    const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/allUsers`, {
+      name: result.user.displayName,
+      email: result.user.email,
+      photoURL: result.user.photoURL,
+      uid: result.user.uid
+    });
+    
+    if (data.message === 'user exists') {
+      toast.success('Welcome back!');
+    } else {
+      toast.success('Account created!');
     }
+    
+    navigate(from, { replace: true });
+  } catch (err) {
+    toast.error(err.response?.data?.error || 'Login failed');
+  }
+};
     // email pass signin
     const handleSignIn =async e=>{
         e.preventDefault();
@@ -31,17 +75,26 @@ const LogIn = () => {
         const password = form.password.value
         const newUser =(email, password)
         console.log(newUser)
+         setRegisterError('');
+        setSuccess('');
         try{
+          
           const result = await signIn(email,password)
           console.log(result)
-          navigate('/')
+           navigate(from, {replace: true})
           toast.success('Sign In successfully'  )
+          setSuccess('Registered Successfully')
     
     
         }
         catch(err){
           console.log(err)
-          toast.error(err?.message)
+          // toast.error(err?.message)
+          if (err?.message==='Firebase: Error (auth/invalid-credential).') {
+            setRegisterError('Invalid Password Or Email, Check Again')
+            
+            
+        }
     
         }
     
@@ -86,9 +139,16 @@ const LogIn = () => {
             <div className="w-full mt-4">
                 <input name="password" className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-500 bg-white border rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300" type="password" placeholder="Password" aria-label="Password" />
             </div>
+             {
+            registerError && <p className="text-red-600 font-bold">{registerError}</p>
+        }
+        {
+            success && <p className="text-green-600 font-bold">{success}</p>
 
-            <div className="flex items-center justify-between mt-4">
-                <a href="#" className="text-sm text-gray-600 dark:text-gray-200 hover:text-gray-500">Forget Password?</a>
+        }
+
+            <div className="flex items-center justify-center mt-4">
+                {/* <a href="#" className="text-sm text-gray-600 dark:text-gray-200 hover:text-gray-500">Forget Password?</a> */}
 
                 <button className="px-6 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-yellow-600 rounded-lg hover:bg-yellow-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">
                     Sign In

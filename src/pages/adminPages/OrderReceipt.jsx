@@ -43,15 +43,15 @@ doc.text('Order Summary', 20, yPos);
 doc.setFont('helvetica', 'normal');
 
 // Format currency values
-const formatCurrency = (amount) => isNaN(amount) ? "0 BDT" : `${amount} BDT`;
+const formatCurrency = (amount) => isNaN(amount) ? "0 BDT" : `${amount}`;
 
-doc.text(`Subtotal: ${formatCurrency(item.orderDetails?.subtotal)}`, 20, yPos + 10);
-doc.text(`Shipping Fee: ${formatCurrency(item.orderDetails?.shippingFee)}`, 20, yPos + 20);
-doc.text(`Discount: ${formatCurrency(item.orderDetails?.discount)}`, 20, yPos + 30);
+doc.text(`Subtotal: ${formatCurrency(item.orderDetails?.subtotal)} BDT`, 20, yPos + 10);
+doc.text(`Shipping Fee: ${formatCurrency(item.orderDetails?.shippingFee)} BDT`, 20, yPos + 20);
+doc.text(`Discount: ${formatCurrency(item.orderDetails?.totalDiscounting.toFixed(2))} %`, 20, yPos + 30);
 
 // Total with emphasis
 doc.setFont('helvetica', 'bold');
-doc.text(`Total Price: ${formatCurrency(item.orderDetails?.total)}`, 20, yPos + 45);
+doc.text(`Grand Total: ${formatCurrency(item.orderDetails?.total)} BDT`, 20, yPos + 45);
 
         // Save the PDF
         doc.save(`order-receipt of ${item.customerInfo.name}.pdf`);
@@ -86,7 +86,7 @@ doc.text(`Total Price: ${formatCurrency(item.orderDetails?.total)}`, 20, yPos + 
                         
                         <li><span className="font-bold">Shipping Fee:</span> {item.orderDetails.shippingFee} BDT</li>
                         
-                        <li><span className=" font-bold">Discount:</span>  BDT</li>
+                        <li><span className=" font-bold">Discount:</span>{item.orderDetails.totalDiscounting.toFixed(2)}%</li>
                         
                        <li> <span className=" font-bold">Grand Total:</span> {item.orderDetails.total} BDT</li>
 

@@ -1,13 +1,52 @@
-import { useContext } from "react";
-import { Link, useNavigate } from "react-router";
+import { useContext, useState, } from "react";
+import { Link, useNavigate , useLocation } from "react-router";
 import { AuthContext } from "./providers/AuthProvider";
 import toast from "react-hot-toast";
 import axios from "axios";
+// import useAdmin from "../../hooks/useAdmin";
 
 
 const Registration = () => {
     const{ createUser,updateUser, user, setUser}= useContext(AuthContext)
         const navigate = useNavigate()
+         const location = useLocation()
+        const[registerError, setRegisterError]= useState('');
+    const[success, setSuccess] = useState('');
+        // const [isAdmin] = useAdmin();
+        const from = location.state?.from || '/' 
+
+//          useEffect(() => {
+//   if (user) {
+//     // Define your actual admin route patterns
+//     const adminRoutes = [
+//       '/addProduct',
+//       '/allProduct/:email',
+//       '/updateItem/:id',
+//       '/manageOrder',
+//       '/viewUser/:id',
+//       '/orderReceipt/:id',
+      
+     
+//     ];
+
+//     const isRequestingAdminRoute = adminRoutes.some(route => 
+//       from.startsWith(route)
+//     );
+
+//     // Check if trying to access admin route without admin privileges
+//     if (isRequestingAdminRoute && !isAdmin) {
+//       navigate('/', { replace: true });
+//     }
+//     // Check if admin is trying to access non-admin routes
+//     else if (!isRequestingAdminRoute && isAdmin && from !== '/') {
+//       navigate('/', { replace: true }); 
+//     }
+//     // Otherwise go to requested page
+//     else {
+//       navigate(from, { replace: true });
+//     }
+//   }
+// }, [user, isAdmin, navigate, from]);
         const handleRegister =async e=>{
             e.preventDefault();
             const form = e.target
@@ -16,7 +55,15 @@ const Registration = () => {
             const password = form.password.value
             const newRegister =(name,email, password)
             console.log(newRegister)
+            setRegisterError('');
+        setSuccess('');
+         if (password.length < 6) {
+            setRegisterError('Password should be in 6 characters or longer')
+         }
+        
+        
             try{
+               
               const result = await createUser(email,password)
               console.log(result)
              
@@ -33,14 +80,18 @@ const Registration = () => {
               
             
             setUser({ ...user, displayName:name })
-                navigate('/')
+                 navigate(from,{replace:true})
                 toast.success('Sign In successfully'  )
+                setSuccess('Registered Successfully')
         
         
             }
             catch(err){
               console.log(err)
-              toast.error(err?.message)
+               setRegisterError(err.message)
+                if (err.message ==='Firebase: Error (auth/email-already-in-use).') {
+            setRegisterError('This Email Already In Use, Try Another')
+         }
         
             }
         
@@ -90,6 +141,13 @@ const Registration = () => {
 
                 <input name="password" type="password" className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Password"/>
             </div>
+            {
+            registerError && <p className="text-red-600 font-bold">{registerError}</p>
+        }
+        {
+            success && <p className="text-green-600 font-bold">{success}</p>
+
+        }
 
             {/* <div className="relative flex items-center mt-4">
                 <span className="absolute">
@@ -100,6 +158,8 @@ const Registration = () => {
 
                 <input type="password" className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Confirm Password"/>
             </div> */}
+            
+            
 
             <div className="mt-6">
                 <button className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-yellow-600 rounded-lg hover:bg-yellow-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">

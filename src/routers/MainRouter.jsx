@@ -21,6 +21,8 @@ import ManageOrder from '../pages/adminPages/ManageOrder';
 import ManageUser from '../pages/adminPages/ManageUser';
 import ViewUser from '../pages/adminPages/ViewUser';
 import OrderReceipt from '../pages/adminPages/OrderReceipt';
+import AdminRouter from './AdminRouter';
+import PrivateRouter from './PrivateRouter';
 
 const MainRouter = createBrowserRouter([
     {
@@ -54,29 +56,29 @@ const MainRouter = createBrowserRouter([
             },
             {
                 path:'/addProduct',
-                element:<AddProducts></AddProducts>
+                element:<AdminRouter><AddProducts></AddProducts></AdminRouter>
             },
             {
                 path:'/allProduct/:email',
-                element:<AllItems></AllItems>
+                element:<AdminRouter><AllItems></AllItems></AdminRouter>
             },
             {
                 path:'/updateItem/:id',
-                element:<UpdateItems></UpdateItems>,
+                element:<AdminRouter><UpdateItems></UpdateItems></AdminRouter>,
                 loader:({params})=>fetch(`${import.meta.env.VITE_API_URL}/items/${params.id}`)
             },
             {
                 path:'/manageOrder',
-                element:<ManageOrder></ManageOrder>
+                element:<AdminRouter><ManageOrder></ManageOrder></AdminRouter>
             },
             {
                 path:'/viewUser/:id',
-                element:<ViewUser></ViewUser>,
+                element:<AdminRouter><ViewUser></ViewUser></AdminRouter>,
                 loader:({params})=>fetch(`${import.meta.env.VITE_API_URL}/orderData/${params.id}`)
             },
             {
                 path:'/orderReceipt/:id',
-                element:<OrderReceipt></OrderReceipt>,
+                element:<AdminRouter><OrderReceipt></OrderReceipt></AdminRouter>,
                 loader:({params})=>fetch(`${import.meta.env.VITE_API_URL}/orderData/${params.id}`)
             },
             {
@@ -85,23 +87,23 @@ const MainRouter = createBrowserRouter([
             },
             {
                 path:'/myCart',
-                element:<MyCart></MyCart>
+                element:<PrivateRouter><MyCart></MyCart></PrivateRouter>
             },
             {
                 path:'/myOrder',
-                element:<MyOrder></MyOrder>
+                element:<PrivateRouter><MyOrder></MyOrder></PrivateRouter>
             },
             {
                 path:'/wishList',
-                element:<WishList></WishList>
+                element:<PrivateRouter><WishList></WishList></PrivateRouter>
             },
             {
                 path:'/Checkout/:email',
-                element:<Checkout></Checkout>
+                element:<PrivateRouter><Checkout></Checkout></PrivateRouter>
             },
             {
                 path:'/updateUserOrder/:id',
-                element:<UpdateUserOrder></UpdateUserOrder>,
+                element:<PrivateRouter><UpdateUserOrder></UpdateUserOrder></PrivateRouter>,
                 loader:({params})=>fetch(`${import.meta.env.VITE_API_URL}/orderData/${params.id}`)
             },
             {
