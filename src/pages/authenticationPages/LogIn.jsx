@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "./providers/AuthProvider";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { IoEye, IoEyeOff } from "react-icons/io5";
 // import useAdmin from "../../hooks/useAdmin";
 
 
@@ -10,6 +11,7 @@ const LogIn = () => {
     const navigate = useNavigate()
     const[registerError, setRegisterError]= useState('');
     const[success, setSuccess] = useState('');
+    const[showPass, setShowPass]=useState(false);
     const {signIn, google,} =useContext(AuthContext)
     // const [isAdmin] = useAdmin();
      const location = useLocation();
@@ -95,6 +97,11 @@ const LogIn = () => {
             
             
         }
+        if (err?.message==='Firebase: Error (auth/invalid-email).') {
+            setRegisterError('Please Fill Up All the Fields')
+            
+            
+        }
     
         }
     
@@ -136,8 +143,9 @@ const LogIn = () => {
                 <input name="email" className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-500 bg-white border rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300" type="email" placeholder="Email Address" aria-label="Email Address" />
             </div>
 
-            <div className="w-full mt-4">
-                <input name="password" className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-500 bg-white border rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300" type="password" placeholder="Password" aria-label="Password" />
+            <div className="w-full mt-4 relative">
+                <input name="password" className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-500 bg-white border rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300" type={showPass?"text":'password'} placeholder="Password" aria-label="Password" />
+                <span className="absolute top-3 right-10 text-xl" onClick={()=>setShowPass(!showPass)}>{showPass?<IoEye />:<IoEyeOff />}</span>
             </div>
              {
             registerError && <p className="text-red-600 font-bold">{registerError}</p>

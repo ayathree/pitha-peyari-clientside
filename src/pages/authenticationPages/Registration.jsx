@@ -3,6 +3,7 @@ import { Link, useNavigate , useLocation } from "react-router";
 import { AuthContext } from "./providers/AuthProvider";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { IoEye, IoEyeOff } from "react-icons/io5";
 // import useAdmin from "../../hooks/useAdmin";
 
 
@@ -12,6 +13,7 @@ const Registration = () => {
          const location = useLocation()
         const[registerError, setRegisterError]= useState('');
     const[success, setSuccess] = useState('');
+    const[showPass, setShowPass]=useState(false);
         // const [isAdmin] = useAdmin();
         const from = location.state?.from || '/' 
 
@@ -81,7 +83,7 @@ const Registration = () => {
             
             setUser({ ...user, displayName:name })
                  navigate(from,{replace:true})
-                toast.success('Sign In successfully'  )
+                toast.success('Sign In successfully')
                 setSuccess('Registered Successfully')
         
         
@@ -139,7 +141,8 @@ const Registration = () => {
                     </svg>
                 </span>
 
-                <input name="password" type="password" className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Password"/>
+                <input name="password" type={showPass?"text":'password'} className="relative block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40" placeholder="Password"/>
+            <span className="absolute top-3 right-10 text-2xl" onClick={()=>setShowPass(!showPass)}>{showPass?<IoEye />:<IoEyeOff />}</span>
             </div>
             {
             registerError && <p className="text-red-600 font-bold">{registerError}</p>
