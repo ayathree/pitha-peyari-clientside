@@ -23,6 +23,7 @@ const ItemDetails = () => {
     const [rating, setRating] = useState(0);
     const[reviews,setReviews]=useState([]);
     const [quantity, setQuantity] = useState({ localQuantity: 1 });
+    const [isLoading, setIsLoading]= useState([]);
 
      
     const handleCart = async e =>{
@@ -68,6 +69,7 @@ const ItemDetails = () => {
     }
 
     useEffect(() => {
+      setIsLoading(true)
             getData();
           }, [user]);
           
@@ -84,6 +86,7 @@ const ItemDetails = () => {
                 .slice(0, 4); // Take only 3 similar products
           
               setProducts(similarProducts);
+              setIsLoading(false)
             } catch (err) {
               console.error("Failed to fetch similar products:", err);
             }
@@ -138,17 +141,24 @@ const ItemDetails = () => {
 
     // show the review
         useEffect(()=>{
+          setIsLoading(true)
             fetchData()
         },[user])
         const fetchData = async()=>{
             const {data}= await axios(`${import.meta.env.VITE_API_URL}/products/${_id}/reviews`)
             setReviews(data)
             fetchData()
+            setIsLoading(false)
         }
 
     return (
         <div className="mt-20">
            {/* product detail */}
+           <div className="flex flex-row justify-center items-center">
+       {
+          isLoading? <span className="loading text-yellow-600 loading-spinner loading-lg "></span>:null
+        }
+       </div>
          
            
             <div className="flex md:flex-row flex-col justify-around items-center gap-4">
@@ -220,6 +230,11 @@ const ItemDetails = () => {
             <hr className="border-yellow-600 border-b-1 w-full mt-6 "/>
             {/* similar product */}
         <div>
+          <div className="flex flex-row justify-center items-center">
+       {
+          isLoading? <span className="loading text-yellow-600 loading-spinner loading-lg "></span>:null
+        }
+       </div>
             <p className={products.length === 0 ? 'hidden' : 'text-4xl font-bold m-10 text-center mt-20 underline underline-2 text-yellow-600'}>You may also like</p>
          <div className="grid grid-cols-4 gap-7 justify-center items-center py-6">
            {
@@ -315,6 +330,11 @@ const ItemDetails = () => {
 
         {/* show the review */}
                 <div>
+                  <div className="flex flex-row justify-center items-center">
+       {
+          isLoading? <span className="loading text-yellow-600 loading-spinner loading-lg "></span>:null
+        }
+       </div>
                    <p className={reviews.length === 0 ? 'hidden' : 'text-4xl font-bold m-10 text-center mt-20 underline underline-2 text-yellow-600'}>Customers Review</p>
                   {
                     reviews.map(review=>(

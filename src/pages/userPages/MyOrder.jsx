@@ -9,7 +9,9 @@ import Swal from "sweetalert2";
 const MyOrder = () => {
     const{user}=useAuth()
     const [orders, setOrders]=useState([])
+    const [isLoading, setIsLoading]= useState([]);
      useEffect(()=>{
+        setIsLoading(true)
             getData()
         },[user])
         const getData = async ()=>{
@@ -17,6 +19,7 @@ const MyOrder = () => {
             )
             console.log(data); 
             setOrders(data)
+            setIsLoading(false)
         }
         console.log(orders);
 
@@ -54,7 +57,15 @@ const MyOrder = () => {
 
     return (
         <div>
-            {orders.length===0?(<p className="text-yellow-600 capitalize text-center text-2xl font-bold mt-20">Hey, Please Order Something. Your Order List Empty Till Now.</p>):(
+            {isLoading ? (
+    <div className="flex justify-center item-center mt-20">
+      <span className="loading loading-spinner text-yellow-600  loading-lg"></span>
+    </div>
+  ) :orders.length === 0 ? (
+    <p className="text-yellow-600 capitalize text-center text-2xl font-bold mt-20">
+     Hey {user?.displayName}, Please Order Something. Your Order List Empty Till Now.
+    </p>
+  ):(
                  <section className="container px-4 mx-auto">
 <p className="text-yellow-600 text-center capitalize text-2xl font-bold mt-10 underline">Order List</p>
 <div className="flex flex-col mt-6">

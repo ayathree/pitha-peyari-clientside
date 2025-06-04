@@ -12,8 +12,10 @@ const MyCart = () => {
     const{user}=useAuth()
     const navigate = useNavigate();
     const [carts, setCarts] = useState([]);
+    const [isLoading, setIsLoading]= useState([]);
 
     useEffect(() => {
+        setIsLoading(true)
         getData();
     }, [user]);
 
@@ -23,6 +25,7 @@ const MyCart = () => {
             ...item,
             localQuantity: item.quantity || 1 // Initialize with stored quantity or 1
         })))
+        setIsLoading(false)
     };
     console.log(carts);
 
@@ -101,7 +104,15 @@ const MyCart = () => {
     
     return (
         <div>
-            {carts.length===0?(<p className="text-yellow-600 capitalize text-center text-2xl font-bold mt-20">Hey, Your Cart List Empty Till Now.</p>):(
+            {isLoading ? (
+    <div className="flex justify-center item-center mt-20">
+      <span className="loading loading-spinner text-yellow-600  loading-lg"></span>
+    </div>
+  ) :carts.length === 0 ? (
+    <p className="text-yellow-600 capitalize text-center text-2xl font-bold mt-20">
+     Hey {user?.displayName}, Your Cart List Empty Till Now.
+    </p>
+  ):(
                 <section className="container px-4 mx-auto">
         <p className="text-yellow-600 text-center capitalize text-2xl font-bold mt-10 underline">Cart Items</p>
         <div className="flex flex-col mt-6">

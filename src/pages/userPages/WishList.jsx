@@ -9,14 +9,17 @@ import toast from "react-hot-toast";
 const WishList = () => {
     const{user}=useAuth()
      const[wishes, setWishes]=useState([])
+      const [isLoading, setIsLoading]= useState([]);
 
       useEffect(() => {
+        setIsLoading(true)
             getData();
         }, [user]);
     
         const getData = async () => {
             const { data } = await axios(`${import.meta.env.VITE_API_URL}/wish/${user?.email}`);
             setWishes(data);
+             setIsLoading(false)
         };
 
         const handleDelete = (id) => {
@@ -81,7 +84,15 @@ const WishList = () => {
           };          
     return (
         <div>
-            {wishes.length===0?(<p className="text-yellow-600 capitalize text-center text-2xl font-bold mt-20">Hey, Your Wish List Empty Till Now.</p>):(
+            {isLoading ? (
+    <div className="flex justify-center item-center mt-20">
+      <span className="loading loading-spinner text-yellow-600  loading-lg"></span>
+    </div>
+  ) :wishes.length === 0 ? (
+    <p className="text-yellow-600 capitalize text-center text-2xl font-bold mt-20">
+     Hey {user?.displayName}, Your Wish List Empty Till Now.
+    </p>
+  ):(
 
                 <section className="container px-4 mx-auto">
                         <p className="text-yellow-600 text-center capitalize text-2xl font-bold my-10 underline">Wish lists</p>

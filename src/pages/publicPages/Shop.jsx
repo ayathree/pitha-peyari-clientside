@@ -14,14 +14,17 @@ import { Link } from "react-router";
 const Shop = () => {
     const{user}=useAuth()
     const[items,setItems]=useState([])
+    const [isLoading, setIsLoading]= useState([]);
    
     
     useEffect(()=>{
+      setIsLoading(true)
             getData()
         },[user])
         const getData = async()=>{
             const {data}= await axios(`${import.meta.env.VITE_API_URL}/addItem`)
             setItems(data)
+             setIsLoading(false)
         }
         console.log(items);
 
@@ -88,8 +91,18 @@ const Shop = () => {
 
     return (
         <div>
-          {items.length===0?(<p className="text-yellow-600 capitalize text-center text-2xl font-bold mt-20">Empty Shop, Please Add Data</p>):(
+           
+          {isLoading ? (
+    <div className="flex justify-center item-center mt-20">
+      <span className="loading loading-spinner text-yellow-600  loading-lg"></span>
+    </div>
+  ) :items.length === 0 ? (
+    <p className="text-yellow-600 capitalize text-center text-2xl font-bold mt-20">
+      Empty Shop, Please Add Data
+    </p>
+  ):(
             <div>
+             
                <p className="text-yellow-600 text-center uppercase text-2xl font-bold my-10 underline">All Pithas</p>
              <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 justify-center items-center">
                {
