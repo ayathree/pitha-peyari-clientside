@@ -28,12 +28,13 @@ const handleFormSubmission=async e=>{
 const ContactUs = () => {
     return (
          <div>
-             <div className="mt-10 relative">
-          <img className="object-cover w-full min-h-screen h-[10vh]" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGupkj_ZAjI4pmTA3ALIOI5GairFNT16AbTw&s" alt="" />
+             <div className="mt-10 relative ">
+                
+          <img className="object-cover w-full min-h-screen h-[10vh]" src="https://i.ibb.co/0j5rjXwX/image.png" alt="" />
           
-          
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-black/30"></div>
           <div className="flex justify-center items-center">
-            <p className="font-bold text-5xl capitalize mt-2 absolute  top-52 p-2 bg-white text-yellow-600">Contact us</p>
+            <p className="font-bold text-5xl capitalize mt-2 absolute  top-52 p-2  text-white">Contact us</p>
           </div>
           </div>
           <div className="mt-20">

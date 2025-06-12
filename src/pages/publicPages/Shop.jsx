@@ -104,7 +104,7 @@ const Shop = () => {
             <div>
              
                <p className="text-yellow-600 text-center uppercase text-2xl font-bold my-10 underline">All Pithas</p>
-             <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 justify-center items-center">
+             <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 justify-center items-center">
                {
                 items.map(item=>(
                      <div key={item._id} className="card bg-yellow-100 hover:bg-amber-200 shadow-lg ">

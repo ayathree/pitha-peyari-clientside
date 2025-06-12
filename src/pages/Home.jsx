@@ -5,7 +5,7 @@ import CategoryProduct from "../components/CategoryProduct";
 
 const Home = () => {
     return (
-        <div>
+        <div className="mt-10">
           {/* banner */}
             <div className="hero min-h-screen" style={{ 
   backgroundImage: "url(https://i.ibb.co/0j5rjXwX/image.png)",
@@ -14,7 +14,7 @@ const Home = () => {
 }}>
   <div className="hero-overlay opacity-60"></div>
   <div className="hero-content text-center text-neutral-content">
-    <FaArrowDownLong className="text-9xl " />
+    <FaArrowDownLong className="text-9xl hidden md:block " />
   </div>
 </div>
 {/* category card */}

@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Link, NavLink } from "react-router";
 import { AuthContext } from "../pages/authenticationPages/providers/AuthProvider";
 import { BsCartFill } from "react-icons/bs";
+import { IoNotifications } from 'react-icons/io5';
 import axios from "axios";
 import useAuth from "../hooks/useAuth";
 import useAdmin from "../hooks/useAdmin";
@@ -13,25 +14,48 @@ const Navbar = () => {
 
    const { logOut } = useContext(AuthContext); 
      const [carts, setCarts] = useState([]);
-    useEffect(() => {
-    if (user?.email) {  // Only run when user.email exists
-        getData();
-    }
-}, [user?.email]);  // Dependency on user.email only
+       const [order,setOrder]=useState([])
 
-const getData = async () => {
-    try {
-        const { data } = await axios(`${import.meta.env.VITE_API_URL}/cart/${user.email}`);
-        setCarts(data);
-    } catch (error) {
-        console.error("Failed to fetch cart:", error);
-    }
-};
+  useEffect(() => {
+    const controller = new AbortController(); // Create abort controller
+  
+    const getData = async () => {
+      if (!user?.email || isAdmin === undefined) return;
+      try {
+        if (isAdmin) {
+          const { data } = await axios(`${import.meta.env.VITE_API_URL}/orderAdmin/${user.email}`, {
+            signal: controller.signal // Attach abort signal
+          });
+          setOrder(data);
+        } else {
+          const { data } = await axios(`${import.meta.env.VITE_API_URL}/cart/${user.email}`, {
+            signal: controller.signal // Attach abort signal
+          });
+          setCarts(data);
+          getData()
+        }
+      } catch (err) {
+        // Check if error was from abort
+        if (err.name === 'CanceledError' || err.message === 'canceled') return;
+        
+        if (err.response?.status === 401) {
+          console.log('Session expired - please login again');
+        }
+      }
+    };
+  
+    getData();
+  
+    // Cleanup function
+    return () => {
+      controller.abort(); // Cancel pending request on unmount/logout
+    };
+  }, [user, isAdmin]);
 
-// To see updated carts, use another useEffect
-useEffect(() => {
-    console.log("Cart items updated:", carts.length);
-}, [carts]);  // Runs whenever carts changes
+
+
+
+
     return (
         <div className="navbar bg-base-100 ">
   <div className="navbar-start">
@@ -43,10 +67,14 @@ useEffect(() => {
         tabIndex={0}
         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
         
-            <li>Home</li>
-            <li>Shop</li>
-             <li>About Us</li>
-              <li>Contact Us</li>
+           <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':''} to={'/'}><li>Home</li></NavLink>
+           <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':''} to={'/shop'}><li>Shop</li></NavLink>
+            <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold hidden ':'hidden'} to={'/about'}><li>About Us</li></NavLink>
+              <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':''} to={'/contact'}><li>Contact Us</li></NavLink>
+              
+              {
+                !user && !isAdmin && <Link to={'/login'}> <button className="font-bold ">Login</button></Link>
+              }
          
         
         
@@ -58,7 +86,7 @@ useEffect(() => {
     <ul className="menu menu-horizontal px-1 flex justify-center items-center gap-3 text-xm">
      <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':''} to={'/'}><li>Home</li></NavLink>
            <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':''} to={'/shop'}><li>Shop</li></NavLink>
-            <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':''} to={'/about'}><li>About Us</li></NavLink>
+            <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold hidden ':'hidden'} to={'/about'}><li>About Us</li></NavLink>
               <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':''} to={'/contact'}><li>Contact Us</li></NavLink>
               {
                 !user && !isAdmin && <Link to={'/login'}> <button className="font-bold ">Login</button></Link>
@@ -68,11 +96,20 @@ useEffect(() => {
   </div>
   <div className="navbar-end flex justify-end items-center gap-8">
 
-    <div className="relative">
-      <Link to={''}><a className="cursor-pointer text-3xl text-yellow-600"><BsCartFill/></a></Link>
-      <div className=" absolute bottom-4 left-4 bg-black text-white rounded-full px-2 ">{carts.length}</div>
-    </div>
+    
      {user && !isAdmin &&  (
+     <div className="flex justify-center items-center gap-7">
+       <div className="relative inline-block group">
+        {carts.length !== 0 && (
+  <div className="absolute -top-2 left-3 badge badge-sm badge-neutral">
+    <p className='text-white'>{carts.length}</p>
+  </div>
+)}
+  <BsCartFill  className="text-xl text-yellow-600" />
+  {/* <div className="invisible group-hover:visible fixed top-4 right-4 bg-gray-800 text-white text-sm px-3 py-2 rounded z-50 w-48 shadow-lg">
+    {cart.length} 
+  </div> */}
+</div>
                         <div className="dropdown dropdown-end">
                             <button 
                                 tabIndex={0} 
@@ -86,19 +123,30 @@ useEffect(() => {
                             <ul
                                 tabIndex={0}
                                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1000] mt-3 w-52 p-2 shadow">
-                                <Link to={'/myOrder'}><li className="justify-between">MyOrder</li></Link>
-                                <Link to={'/wishList'}><li className="justify-between">WishList</li></Link>
-                                <Link to={'/myCart'}><li className="justify-between">MyCart</li></Link>
+                                <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':''} to={'/myOrder'}><li className="justify-between">MyOrder</li></NavLink>
+                                <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':''} to={'/wishList'}><li className="justify-between">WishList</li></NavLink>
+                                <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':''} to={'/myCart'}><li className="justify-between">MyCart</li></NavLink>
                                
                                 
                                
                                 <li className="cursor-pointer" onClick={logOut}>Logout</li>
                             </ul>
                         </div>
+     </div>
                     )}
 
 
       {user && isAdmin &&  (
+       <div className="flex justify-center items-center gap-2">
+         <div className="relative inline-block group">
+        {order.length !== 0 && (
+  <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>
+)}
+  <IoNotifications className="text-xl text-yellow-600" />
+  <div className="invisible group-hover:visible fixed top-4 right-4 bg-gray-800 text-white text-sm px-3 py-2 rounded z-50 w-48 shadow-lg">
+    {order.length} order notifications
+  </div>
+</div>
                         <div className="dropdown dropdown-end">
                             <button 
                                 tabIndex={0} 
@@ -113,8 +161,8 @@ useEffect(() => {
                                 tabIndex={0}
                                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1000] mt-3 w-52 p-2 shadow">
                                 
-                                <Link to={'/addProduct'}><li className="justify-between">Add Product</li></Link>
-                                <Link to={'/manageOrder'}><li className="justify-between">Manage Order</li></Link>
+                                <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':''} to={'/addProduct'}><li className="justify-between">Add Product</li></NavLink>
+                                <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':''} to={'/manageOrder'}><li className="justify-between">Manage Order</li></NavLink>
                                  
                                 
                                 
@@ -122,6 +170,7 @@ useEffect(() => {
                                 <li className="cursor-pointer" onClick={logOut}>Logout</li>
                             </ul>
                         </div>
+       </div>
                     )}              
   </div>
 </div>
