@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 import { AuthContext } from "../pages/authenticationPages/providers/AuthProvider";
 import { BsCartFill } from "react-icons/bs";
 import axios from "axios";
@@ -52,16 +52,16 @@ useEffect(() => {
         
       </ul>
     </div>
-    <a class="text-3xl font-bold uppercase text-yellow-600">pitha peyari</a> 
+    <a class="text-3xl font-bold uppercase text-yellow-600">পিঠা পেয়ারি</a> 
   </div>
   <div className="navbar-center hidden lg:flex">
-    <ul className="menu menu-horizontal px-1 flex justify-center items-center gap-3 text-xl">
-      <Link to={'/'}> <li className="hidden">Home</li></Link>
-           <Link to={'/shop'}> <li>Shop</li></Link>
-            <Link to={'/about'}> <li className="hidden">About Us</li></Link>
-              <Link to={'/contact'}><li className="hidden">Contact Us</li></Link>
+    <ul className="menu menu-horizontal px-1 flex justify-center items-center gap-3 text-xm">
+     <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':''} to={'/'}><li>Home</li></NavLink>
+           <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':''} to={'/shop'}><li>Shop</li></NavLink>
+            <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':''} to={'/about'}><li>About Us</li></NavLink>
+              <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':''} to={'/contact'}><li>Contact Us</li></NavLink>
               {
-                !user && !isAdmin && <Link to={'/login'}> <button className="font-bold text-yellow-600">Login</button></Link>
+                !user && !isAdmin && <Link to={'/login'}> <button className="font-bold ">Login</button></Link>
               }
                {/* {!user?(<></>):( <Link to={'/addProduct'}><li>Add items</li></Link>)} */}
     </ul>
