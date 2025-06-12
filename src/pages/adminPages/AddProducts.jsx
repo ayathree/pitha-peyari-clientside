@@ -32,6 +32,7 @@ const AddProducts = () => {
             const title= form.title.value
             // const price = form.price.value
             const description = form.description.value  
+            const category = form.category.value
             const imageUrl = form.imageUrl.value 
             const adminEmail = user?.email
             const fakePrice = showPrice
@@ -39,7 +40,7 @@ const AddProducts = () => {
             const customerSave = saveMoney
             const totalDiscount = discount 
             // const totalOrder = 0
-            const productData = {title,description,imageUrl,adminEmail,fakePrice,mainPrice,customerSave,totalDiscount}
+            const productData = {title,description,category,imageUrl,adminEmail,fakePrice,mainPrice,customerSave,totalDiscount}
             console.table(productData)
     
             try{
@@ -74,6 +75,17 @@ const AddProducts = () => {
             <div>
                 <label className="text-gray-700 dark:text-gray-200" for="emailAddress">Description</label>
                 <input name="description" type="text" className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring" required/>
+            </div>
+            <div>
+                <label className="text-gray-700 dark:text-gray-200" >Category</label>
+                <select name="category" type="text" className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring" required>
+                    
+                    <option value="">Select Category</option>
+  <option value="pitha">Pitha</option>
+  <option value="Spicy">Spicy</option>
+  
+
+                </select>
             </div>
 
             <div>

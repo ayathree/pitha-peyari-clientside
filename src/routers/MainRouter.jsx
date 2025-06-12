@@ -23,6 +23,7 @@ import ViewUser from '../pages/adminPages/ViewUser';
 import OrderReceipt from '../pages/adminPages/OrderReceipt';
 import AdminRouter from './AdminRouter';
 import PrivateRouter from './PrivateRouter';
+import Category from '../pages/publicPages/Category';
 
 const MainRouter = createBrowserRouter([
     {
@@ -110,6 +111,11 @@ const MainRouter = createBrowserRouter([
                 path:'/itemDetails/:id',
                 element:<ItemDetails></ItemDetails>,
                 loader:({params})=>fetch(`${import.meta.env.VITE_API_URL}/items/${params.id}`)
+            },
+            {
+                path:'/categories/:category',
+                element:<Category></Category>,
+                loader:({params})=>fetch(`${import.meta.env.VITE_API_URL}/itemCategory/${params.category}`)
             }
         ]
 
