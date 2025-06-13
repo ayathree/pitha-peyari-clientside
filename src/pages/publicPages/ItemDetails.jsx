@@ -202,7 +202,8 @@ const ItemDetails = () => {
                  </div>
                 <p className="text-lg capitalize font-bold text-yellow-600">{description}</p>
                  <p className="text-3xl capitalize font-bold mt-3">Quantity:</p>
-                <QuantityButton 
+               <div className="flex justify-start items-center gap-4">
+                 <QuantityButton 
     initialQuantity={quantity.localQuantity || 1}
     onQuantityChange={(newQuantity) => {
       setQuantity(prev => ({ ...prev, localQuantity: newQuantity }));
@@ -211,6 +212,8 @@ const ItemDetails = () => {
     max={10}
     className="mt-2"
   />
+  <p>Piece</p>
+               </div>
                 
                 
                 
@@ -236,7 +239,7 @@ const ItemDetails = () => {
         }
        </div>
             <p className={products.length === 0 ? 'hidden' : 'text-4xl font-bold m-10 text-center mt-20 underline underline-2 text-yellow-600'}>You may also like</p>
-         <div className="grid grid-cols-4 gap-7 justify-center items-center py-6">
+         <div className="grid grid-cols-3 gap-7 justify-center items-center py-6">
            {
             products.slice(0,4).map(item=> <Link to={`/itemDetails/${item._id}`} key={item._id}>
             <div  >
@@ -262,7 +265,7 @@ const ItemDetails = () => {
       
         </div>
        {/* review of customer */}
-               <div>
+               <div className="hidden">
                <p className="text-4xl font-bold m-20 text-center underline underline-2 text-yellow-600 ">Write a Review</p>
                <div className="flex justify-center items-center">
                  <button 
@@ -329,7 +332,7 @@ const ItemDetails = () => {
                </div>
 
         {/* show the review */}
-                <div>
+                <div className="hidden">
                   <div className="flex flex-row justify-center items-center">
        {
           isLoading? <span className="loading text-yellow-600 loading-spinner loading-lg "></span>:null

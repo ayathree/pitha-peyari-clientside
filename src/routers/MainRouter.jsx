@@ -98,10 +98,10 @@ const MainRouter = createBrowserRouter([
                 path:'/wishList',
                 element:<PrivateRouter><WishList></WishList></PrivateRouter>
             },
-            {
-                path:'/Checkout/:email',
-                element:<PrivateRouter><Checkout></Checkout></PrivateRouter>
-            },
+            // {
+            //     path:'/Checkout/:email',
+            //     element:<PrivateRouter><Checkout></Checkout></PrivateRouter>
+            // },
             {
                 path:'/updateUserOrder/:id',
                 element:<PrivateRouter><UpdateUserOrder></UpdateUserOrder></PrivateRouter>,

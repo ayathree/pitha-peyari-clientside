@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
 import useAuth from "../../hooks/useAuth";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -6,13 +6,16 @@ import QuantityButton from "../../components/QuantityButton";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import { FaExternalLinkAlt } from "react-icons/fa";
+import Checkout from "./Checkout";
 
 
 const MyCart = () => {
     const{user}=useAuth()
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const [carts, setCarts] = useState([]);
     const [isLoading, setIsLoading]= useState([]);
+     const [showText, setShowText] = useState(false);
+     
 
     useEffect(() => {
         setIsLoading(true)
@@ -92,13 +95,19 @@ const MyCart = () => {
             );
             
             // Then navigate to checkout with user email
-            navigate(`/checkOut/${user?.email}`);
+            // navigate(`/checkOut/${user?.email}`);
+            setShowText(!showText); // Toggles the state between true/false
             
         } catch (error) {
             console.error('Checkout preparation failed:', error);
             toast.error('Failed to prepare checkout');
         }
-    };    
+    };  
+    
+    
+//     const handleClick = () => {
+//     setShowText(!showText); // Toggles the state between true/false
+//   };
 
 
     
@@ -176,13 +185,16 @@ const MyCart = () => {
                                    
                                     <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">{cart.productPrice} BDT</td>
                                     <td>
-                                        <QuantityButton
+                                       <div className="flex justify-center items-center gap-3">
+                                         <QuantityButton
                                                         initialQuantity={cart.itemQuantity}
                                                         min={1}
                                                         max={10}
                                                         onQuantityChange={(newQty) => updateQuantity(cart._id, newQty)}
                                                         className="mt-2"
                                                     />
+                                                    <p>Piece</p>
+                                       </div>
                                     </td>
                                     {/* <td className="px-4 py-4 text-lg text-gray-500 dark:text-gray-300 whitespace-nowrap"> {cart.localQuantity}</td> */}
                                     
@@ -213,9 +225,14 @@ const MyCart = () => {
         </div>
        <div className="flex justify-center items-center mt-20">
         <button onClick={handleCheckoutAll}  className="text-black transition-colors hover:bg-yellow-800 bg-yellow-500 rounded-lg px-4 py-2 disabled:bg-slate-400 duration-200 dark:hover:text-white dark:text-gray-300 hover:text-white focus:outline-none flex gap-2">
-                                            Checkout<FaExternalLinkAlt />
+                                            {showText ? 'Update' : 'Checkout'}<FaExternalLinkAlt />
                                             </button>
         </div>
+                                            {
+                                                showText && (
+                                                    <Checkout></Checkout>
+                                                )
+                                            }
 
         
         
