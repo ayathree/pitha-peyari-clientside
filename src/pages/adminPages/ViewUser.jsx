@@ -24,7 +24,7 @@ const ViewUser = () => {
             </li>
             ))}</p>
             <h1 className="underline text-2xl font-bold text-yellow-600 my-5">Order Details:</h1>
-            <p><span className="font-bold text-xl">Order Date:</span> {item.orderDetails.date}</p>
+            <p><span className="font-bold text-xl">Order Date:</span> {new Date(item.orderDetails.date).toLocaleDateString('en-GB')}</p>
             <p><span className="font-bold text-xl">Order Method:</span> {item.orderDetails.method}</p>
             <p><span className="font-bold text-xl">Status:</span> {item.orderDetails.status}</p>
             <p><span className="font-bold text-xl">Subtotal:</span> {item.orderDetails.subtotal} BDT</p>

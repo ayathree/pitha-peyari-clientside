@@ -72,41 +72,41 @@ const ManageOrder = () => {
             console.log(isError,error);
         }
 
-         const handleDelete = (id) => {
-         Swal.fire({
-           title: "Are you sure?",
-           text: "You won't be able to revert this!",
-           icon: "warning",
-           showCancelButton: true,
-           confirmButtonColor: "#3085d6",
-           cancelButtonColor: "#d33",
-           confirmButtonText: "Yes, delete it!"
-         }).then(async (result) => {
-           if (result.isConfirmed) {
-             try {
-                // Optimistically remove from UI
-            const previousOrders = orders;
-            console.log(previousOrders);
-               await axios.delete(`${import.meta.env.VITE_API_URL}/orderData/${id}`);
+    //      const handleDelete = (id) => {
+    //      Swal.fire({
+    //        title: "Are you sure?",
+    //        text: "You won't be able to revert this!",
+    //        icon: "warning",
+    //        showCancelButton: true,
+    //        confirmButtonColor: "#3085d6",
+    //        cancelButtonColor: "#d33",
+    //        confirmButtonText: "Yes, delete it!"
+    //      }).then(async (result) => {
+    //        if (result.isConfirmed) {
+    //          try {
+    //             // Optimistically remove from UI
+    //         const previousOrders = orders;
+    //         console.log(previousOrders);
+    //            await axios.delete(`${import.meta.env.VITE_API_URL}/orderData/${id}`);
                
-               await Swal.fire({
-                 title: "Deleted!",
-                 text: "Your product has been deleted.",
-                 icon: "success"
-               });
+    //            await Swal.fire({
+    //              title: "Deleted!",
+    //              text: "Your product has been deleted.",
+    //              icon: "success"
+    //            });
                
-               // Refresh data
-        await refetch();
-             } catch (err) {
-               await Swal.fire({
-                 title: "Error!",
-                 text: err.response?.data?.message || "Failed to delete product",
-                 icon: "error"
-               });
-             }
-           }
-         });
-       };  
+    //            // Refresh data
+    //     await refetch();
+    //          } catch (err) {
+    //            await Swal.fire({
+    //              title: "Error!",
+    //              text: err.response?.data?.message || "Failed to delete product",
+    //              icon: "error"
+    //            });
+    //          }
+    //        }
+    //      });
+    //    };  
 
     return (
         <div>
@@ -146,7 +146,7 @@ const ManageOrder = () => {
            
                                        <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Action</th>
                                        <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Status</th>
-                                       <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Remove</th>
+                                       <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Date</th>
                                        
                                    </tr>
                                </thead>
@@ -238,9 +238,10 @@ const ManageOrder = () => {
                                        </td>
                                        
                                        <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                                        <button onClick={()=> handleDelete(order._id)} disabled={order.orderDetails.status !== 'Delivered'} className="disabled:bg-slate-500 disabled:text-slate-500 hover:text-red-600">
+                                        {/* <button onClick={()=> handleDelete(order._id)} disabled={order.orderDetails.status !== 'Delivered'} className="disabled:bg-slate-500 disabled:text-slate-500 hover:text-red-600">
                                             <MdDelete className="text-2xl"/>
-                                        </button>
+                                        </button> */}
+                                        {new Date(order.orderDetails.date).toLocaleDateString('en-GB')}
                                        </td>
                                    </tr>
                                        ))

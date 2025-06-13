@@ -4,12 +4,12 @@ import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import DatePicker from "react-datepicker";
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
 
 
 const Checkout = () => {
     const{user}=useAuth();
-    const navigate=useNavigate()
+    // const navigate=useNavigate()
     const [startDate] = useState(new Date());
     const [items, setItems] = useState([]);
     const[fakeTotal, setFakeTotal]=useState(0)
@@ -149,7 +149,7 @@ const handleFormSubmission = async (e) => {
     const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/order`, orderData);
     console.log(data);
     toast.success('Order placed successfully!');
-    navigate('/myOrder');
+    // navigate('/myOrder');
   } catch (err) {
     console.error('Order failed:', err);
     toast.error(err.response?.data?.message || 'Failed to place order');
