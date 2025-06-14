@@ -67,29 +67,29 @@ const Navbar = () => {
         tabIndex={0}
         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
         
-           <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':''} to={'/'}><li>Home</li></NavLink>
-           <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':''} to={'/shop'}><li>Shop</li></NavLink>
-            <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold hidden ':'hidden'} to={'/about'}><li>About Us</li></NavLink>
-              <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':''} to={'/contact'}><li>Contact Us</li></NavLink>
+           <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':'hover:text-yellow-600'} to={'/'}><li>Home</li></NavLink>
+           <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':'hover:text-yellow-600'} to={'/shop'}><li>Shop</li></NavLink>
+            <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold hidden ':'hidden hover:text-yellow-600'} to={'/about'}><li>About Us</li></NavLink>
+              <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':'hover:text-yellow-600'} to={'/contact'}><li>Contact Us</li></NavLink>
               
               {
-                !user && !isAdmin && <Link to={'/login'}> <button className="font-bold ">Login</button></Link>
+                !user && !isAdmin && <Link to={'/login'}> <button className="font-bold hover:text-yellow-600 ">Login</button></Link>
               }
          
         
         
       </ul>
     </div>
-    <a class="text-3xl font-bold uppercase text-yellow-600">পিঠা পেয়ারি</a> 
+    <a class="md:text-3xl text-lg font-bold uppercase text-yellow-600">পিঠা পেয়ারি</a> 
   </div>
   <div className="navbar-center hidden lg:flex">
     <ul className="menu menu-horizontal px-1 flex justify-center items-center gap-3 text-xm">
-     <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':''} to={'/'}><li>Home</li></NavLink>
-           <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':''} to={'/shop'}><li>Shop</li></NavLink>
-            <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold hidden ':'hidden'} to={'/about'}><li>About Us</li></NavLink>
-              <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':''} to={'/contact'}><li>Contact Us</li></NavLink>
+     <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':'hover:text-yellow-600'} to={'/'}><li>Home</li></NavLink>
+           <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':'hover:text-yellow-600'} to={'/shop'}><li>Shop</li></NavLink>
+            <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold hidden ':'hidden hover:text-yellow-600'} to={'/about'}><li>About Us</li></NavLink>
+              <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':'hover:text-yellow-600'} to={'/contact'}><li>Contact Us</li></NavLink>
               {
-                !user && !isAdmin && <Link to={'/login'}> <button className="font-bold ">Login</button></Link>
+                !user && !isAdmin && <Link to={'/login'}> <button className="font-bold hover:text-yellow-600">Login</button></Link>
               }
                {/* {!user?(<></>):( <Link to={'/addProduct'}><li>Add items</li></Link>)} */}
     </ul>
@@ -115,21 +115,21 @@ const Navbar = () => {
                                 tabIndex={0} 
                                 role="button" 
                                 aria-label="User menu" 
-                                className="font-bold text-yellow-600">
-                                <div className="w-10 rounded-full">
-                                    <p>{user?.displayName}</p>
+                                className="">
+                                <div className="md:w-full btn bg-yellow-600 btn-outline">
+                                    <p className="md:font-bold text-white md:text-xl text-xm capitalize">{user?.displayName}</p>
                                 </div>
                             </button>
                             <ul
                                 tabIndex={0}
                                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1000] mt-3 w-52 p-2 shadow">
-                                <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':''} to={'/myOrder'}><li className="justify-between">MyOrder</li></NavLink>
-                                <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':''} to={'/wishList'}><li className="justify-between">WishList</li></NavLink>
-                                <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':''} to={'/myCart'}><li className="justify-between">MyCart</li></NavLink>
+                                <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':'hover:text-yellow-600'} to={'/myOrder'}><li className="justify-between">MyOrder</li></NavLink>
+                                <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':'hover:text-yellow-600'} to={'/wishList'}><li className="justify-between">WishList</li></NavLink>
+                                <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':'hover:text-yellow-600'} to={'/myCart'}><li className="justify-between">MyCart</li></NavLink>
                                
                                 
                                
-                                <li className="cursor-pointer" onClick={logOut}>Logout</li>
+                                <li className="cursor-pointer hover:text-yellow-600" onClick={logOut}>Logout</li>
                             </ul>
                         </div>
      </div>
@@ -161,13 +161,13 @@ const Navbar = () => {
                                 tabIndex={0}
                                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1000] mt-3 w-52 p-2 shadow">
                                 
-                                <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':''} to={'/addProduct'}><li className="justify-between">Add Product</li></NavLink>
-                                <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':''} to={'/manageOrder'}><li className="justify-between">Manage Order</li></NavLink>
+                                <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':'hover:text-yellow-600'} to={'/addProduct'}><li className="justify-between">Add Product</li></NavLink>
+                                <NavLink className={({isActive})=>isActive?'text-yellow-600 font-bold ':'hover:text-yellow-600'} to={'/manageOrder'}><li className="justify-between">Manage Order</li></NavLink>
                                  
                                 
                                 
                                
-                                <li className="cursor-pointer" onClick={logOut}>Logout</li>
+                                <li className="cursor-pointer hover:text-yellow-600" onClick={logOut}>Logout</li>
                             </ul>
                         </div>
        </div>
