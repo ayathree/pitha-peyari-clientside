@@ -1,15 +1,18 @@
-import { useContext, useState,} from "react";
+import { useContext, useRef, useState,} from "react";
 import { Link, useLocation, useNavigate } from "react-router";
+import auth from "../../firebase/firebase.config";
 import { AuthContext } from "./providers/AuthProvider";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { IoEye, IoEyeOff } from "react-icons/io5";
+import { sendPasswordResetEmail } from "firebase/auth";
 // import useAdmin from "../../hooks/useAdmin";
 
 
 const LogIn = () => {
     const navigate = useNavigate()
     const[registerError, setRegisterError]= useState('');
+    const emailRef = useRef(null);
     const[success, setSuccess] = useState('');
     const[showPass, setShowPass]=useState(false);
     const {signIn, google,} =useContext(AuthContext)
@@ -106,6 +109,28 @@ const LogIn = () => {
         }
     
       }
+
+      const handleForgetPass=()=>{
+
+      const email = emailRef.current.value;
+      if (!email) {
+        console.log(emailRef.current.value)
+        return;
+
+        
+      }
+      
+        sendPasswordResetEmail(auth, email)
+        .then(()=>{
+          alert('check your email')
+        })
+        .catch(error=>{
+          console.log(error)
+        })
+
+    
+
+    }
     return (
         <div>
             <div className="w-full mt-20 max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800">
@@ -140,7 +165,7 @@ const LogIn = () => {
         </div>
         <form onSubmit={handleSignIn}>
             <div className="w-full mt-4">
-                <input name="email" className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-500 bg-white border rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300" type="email" placeholder="Email Address" aria-label="Email Address" />
+                <input name="email" ref={emailRef} className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-500 bg-white border rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300" type="email" placeholder="Email Address" aria-label="Email Address" />
             </div>
 
             <div className="w-full mt-4 relative">
@@ -155,9 +180,9 @@ const LogIn = () => {
 
         }
 
+<a href="#" onClick={handleForgetPass} className="text-sm hover:text-yellow-600 text-gray-600 dark:text-gray-200">Forget Password?</a>
             <div className="flex items-center justify-center mt-4">
-                {/* <a href="#" className="text-sm text-gray-600 dark:text-gray-200 hover:text-gray-500">Forget Password?</a> */}
-
+                
                 <button className="px-6 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-yellow-600 rounded-lg hover:bg-yellow-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">
                     Sign In
                 </button>
