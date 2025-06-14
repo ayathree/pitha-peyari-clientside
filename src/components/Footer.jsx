@@ -5,11 +5,11 @@ const Footer = () => {
         <div className="mt-20">
            <footer className="footer sm:footer-horizontal  text-neutral-content items-center p-4">
   <aside className="">
-    <a class="text-3xl font-bold uppercase text-yellow-800">পিঠা পেয়ারি</a> 
+    <a class="text-3xl font-bold uppercase text-yellow-800 dark:text-yellow-400">পিঠা পেয়ারি</a> 
    
-    <p className="text-yellow-800">Copyright © {new Date().getFullYear()} - All right reserved</p>
+    <p className="text-yellow-800 dark:text-yellow-400">Copyright © {new Date().getFullYear()} - All right reserved</p>
   </aside>
-  <nav className="grid-flow-col gap-4 md:place-self-center md:justify-self-end text-yellow-800">
+  <nav className="grid-flow-col gap-4 md:place-self-center md:justify-self-end text-yellow-800 dark:text-yellow-400">
     <a>
       <svg
         xmlns="http://www.w3.org/2000/svg"

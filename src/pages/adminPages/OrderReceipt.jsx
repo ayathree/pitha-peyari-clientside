@@ -59,7 +59,7 @@ doc.text(`Grand Total: ${formatCurrency(item.orderDetails?.total)} BDT`, 20, yPo
     return (
         <div className="mt-20">
             
-                <div className="mb-8 p-4 border rounded-lg border-yellow-800 bg-amber-100">
+                <div className="mb-8 p-4 border rounded-lg border-yellow-800 bg-amber-100 dark:bg-black">
                     <h2 className=" font-bold text-2xl text-yellow-600 mb-2">
                         Order for:
                     </h2>

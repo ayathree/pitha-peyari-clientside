@@ -33,7 +33,7 @@ const QuantityButton = ({
       <button
         onClick={handleDecrement}
         disabled={quantity <= min}
-        className="px-3 py-2 bg-gray-100 border border-gray-300 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        className="px-3 py-2 bg-gray-100 border dark:text-black border-gray-300 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         aria-label="Decrease quantity"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -47,14 +47,14 @@ const QuantityButton = ({
         onChange={handleChange}
         min={min}
         max={max}
-        className="w-12 text-center  border-x border-gray-300 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+        className="w-12 text-center  border-x  border-gray-300 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
         aria-label="Quantity"
       />
       
       <button
         onClick={handleIncrement}
         disabled={quantity >= max}
-        className="px-3 py-2 bg-gray-100 border border-gray-300 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        className="px-3 py-2 bg-gray-100 border dark:text-black border-gray-300 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         aria-label="Increase quantity"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

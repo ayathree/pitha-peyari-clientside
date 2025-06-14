@@ -224,7 +224,7 @@ const MyCart = () => {
             </div>
         </div>
        <div className="flex justify-center items-center mt-20">
-        <button onClick={handleCheckoutAll}  className="text-black transition-colors hover:bg-yellow-800 bg-yellow-500 rounded-lg px-4 py-2 disabled:bg-slate-400 duration-200 dark:hover:text-white dark:text-gray-300 hover:text-white focus:outline-none flex gap-2">
+        <button onClick={handleCheckoutAll}  className="text-black transition-colors dark:text-black hover:bg-yellow-800 bg-yellow-500 rounded-lg px-4 py-2 disabled:bg-slate-400 duration-200 dark:hover:text-white  hover:text-white focus:outline-none flex gap-2">
                                             {showText ? 'Update' : 'Checkout'}<FaExternalLinkAlt />
                                             </button>
         </div>

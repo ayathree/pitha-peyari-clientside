@@ -198,7 +198,7 @@ const ItemDetails = () => {
                  </div>
                  <div className="flex items-center gap-3">
                    <p className="text-3xl capitalize font-bold ">{title}</p>
-                  <p><span className="text-5xl capitalize font-bold text-red-600">{totalDiscount}%</span> Discount</p>
+                  <p><span className="text-5xl capitalize font-bold text-red-600 dark:text-yellow-400">{totalDiscount}%</span> Discount</p>
                  </div>
                 <p className="text-lg capitalize font-bold text-yellow-600">{description}</p>
                  <p className="text-3xl capitalize font-bold mt-3">Quantity:</p>
@@ -247,7 +247,7 @@ const ItemDetails = () => {
                    <div className="relative">
                      <img className="lg:h-[300px] h-[20vh] md:h-[40vh]   border-2 shadow-md" src={item.imageUrl} alt="" />
                        <div className="lg:flex justify-between items-center hidden ">
-                <p className="md:font-bold  absolute top-2 left-4 bg-yellow-600 md:px-2 text-white ">{item.price} BDT</p>
+                <p className="md:font-bold  absolute top-2 left-4 bg-red-600 md:px-2 text-white ">{item.mainPrice} BDT IN OFFER PRICE</p>
                             
                        </div>
                         
