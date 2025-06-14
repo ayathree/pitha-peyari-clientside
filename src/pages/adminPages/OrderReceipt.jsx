@@ -3,6 +3,7 @@ import { useLoaderData } from "react-router";
 
 
 const OrderReceipt = () => {
+    
     const item = useLoaderData()
     console.log(item);
 

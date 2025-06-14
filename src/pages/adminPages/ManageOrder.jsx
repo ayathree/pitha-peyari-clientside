@@ -1,4 +1,4 @@
-import axios from "axios";
+// import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 // import { useEffect, useState } from "react";
 import { TiTick } from "react-icons/ti";
@@ -13,11 +13,13 @@ import { FaRegFileAlt } from "react-icons/fa";
 import { CgDetailsMore } from "react-icons/cg";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 // import { useEffect } from "react";
 
 
 const ManageOrder = () => {
     const{user}=useAuth()
+    const axiosSecure=useAxiosSecure()
     // delete order
 
 
@@ -35,7 +37,7 @@ const ManageOrder = () => {
      
     
         const getData = async ()=>{
-            const{data}= await axios(`${import.meta.env.VITE_API_URL}/orderAdmin/${user?.email}`,
+            const{data}= await axiosSecure(`/orderAdmin/${user?.email}`,
             )
             console.log(data); 
             // setOrders(data)
@@ -46,7 +48,7 @@ const ManageOrder = () => {
         // tanstack query for update or patch
         const {mutateAsync}=useMutation({
             mutationFn: async({id, status})=>{
-                const {data}=await axios.patch(`${import.meta.env.VITE_API_URL}/order/${id}`,{status})
+                const {data}=await axiosSecure.patch(`/order/${id}`,{status})
                 console.log(data);
             },
             onSuccess:()=>{

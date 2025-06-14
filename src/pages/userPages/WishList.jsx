@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
-import axios from "axios";
+// import axios from "axios";
 import { BsCart } from "react-icons/bs";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 
 const WishList = () => {
     const{user}=useAuth()
+    const axiosSecure=useAxiosSecure()
      const[wishes, setWishes]=useState([])
       const [isLoading, setIsLoading]= useState([]);
 
@@ -17,7 +19,7 @@ const WishList = () => {
         }, [user]);
     
         const getData = async () => {
-            const { data } = await axios(`${import.meta.env.VITE_API_URL}/wish/${user?.email}`);
+            const { data } = await axiosSecure(`/wish/${user?.email}`);
             setWishes(data);
              setIsLoading(false)
         };
@@ -34,7 +36,7 @@ const WishList = () => {
                     }).then(async (result) => {
                       if (result.isConfirmed) {
                         try {
-                          await axios.delete(`${import.meta.env.VITE_API_URL}/wishData/${id}`);
+                          await axiosSecure.delete(`/wishData/${id}`);
                           
                           await Swal.fire({
                             title: "Deleted!",
@@ -73,7 +75,7 @@ const WishList = () => {
           
             // 3. Send to backend
             try {
-                const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/wishData`, cartData);
+                const { data } = await axiosSecure.post(`/wishData`, cartData);
                 console.log(data);
                 toast.success('Add in cart!');
                 // navigate('/myCart');

@@ -7,9 +7,11 @@ import axios from 'axios'
 import {Rating} from 'react-simple-star-rating'
 import { FaStar } from "react-icons/fa";
 import QuantityButton from "../../components/QuantityButton";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const ItemDetails = () => {
     const itemData = useLoaderData()
+    const axiosSecure = useAxiosSecure()
     // console.log(itemData);
     const {
         _id, title, description,imageUrl, adminEmail,fakePrice,mainPrice,totalDiscount,customerSave
@@ -49,7 +51,7 @@ const ItemDetails = () => {
         console.table(savedData)
 
         try{
-            const {data}= await axios.post(`${import.meta.env.VITE_API_URL}/cart`, savedData)
+            const {data}= await axiosSecure.post(`/cart`, savedData)
 
             console.log(data)
             setQuantity({

@@ -3,14 +3,16 @@ import { Link, NavLink } from "react-router";
 import { AuthContext } from "../pages/authenticationPages/providers/AuthProvider";
 import { BsCartFill } from "react-icons/bs";
 import { IoNotifications } from 'react-icons/io5';
-import axios from "axios";
+
 import useAuth from "../hooks/useAuth";
 import useAdmin from "../hooks/useAdmin";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 
 const Navbar = () => {
   const{user}=useAuth()
    const [isAdmin]=useAdmin()
+   const axiosSecure=useAxiosSecure()
 
    const { logOut } = useContext(AuthContext); 
      const [carts, setCarts] = useState([]);
@@ -23,12 +25,12 @@ const Navbar = () => {
       if (!user?.email || isAdmin === undefined) return;
       try {
         if (isAdmin) {
-          const { data } = await axios(`${import.meta.env.VITE_API_URL}/orderAdmin/${user.email}`, {
+          const { data } = await axiosSecure(`/orderAdmin/${user.email}`, {
             signal: controller.signal // Attach abort signal
           });
           setOrder(data);
         } else {
-          const { data } = await axios(`${import.meta.env.VITE_API_URL}/cart/${user.email}`, {
+          const { data } = await axiosSecure(`/cart/${user.email}`, {
             signal: controller.signal // Attach abort signal
           });
           setCarts(data);

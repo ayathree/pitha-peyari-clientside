@@ -11,7 +11,7 @@ const Category = () => {
             <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 justify-center items-center">
                {
                 products.map(item=>(
-                     <div key={item._id} className="card bg-yellow-100 hover:bg-amber-200 dark:bg-yellow-800 dark:hover:bg-amber-500 shadow-lg ">
+                     <div key={item._id} className="card bg-amber-200 hover:bg-amber-300 dark:bg-yellow-800 dark:hover:bg-amber-500 shadow-lg ">
   <figure className="relative">
     <img
       src={item.imageUrl}

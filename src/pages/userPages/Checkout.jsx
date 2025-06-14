@@ -1,14 +1,16 @@
-import axios from "axios";
+// import axios from "axios";
 import { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import DatePicker from "react-datepicker";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 // import { useNavigate } from "react-router";
 
 
 const Checkout = () => {
     const{user}=useAuth();
+    const axiosSecure=useAxiosSecure()
     // const navigate=useNavigate()
     const [startDate] = useState(new Date());
     const [items, setItems] = useState([]);
@@ -25,7 +27,7 @@ const [total, setTotal] = useState(0);
     
     const getData = async () => {
       try {
-        const { data } = await axios(`${import.meta.env.VITE_API_URL}/checkOutData/${user?.email}`);
+        const { data } = await axiosSecure(`/checkOutData/${user?.email}`);
         setItems(data);
       } catch (error) {
         console.error('Failed to fetch cart data:', error);
@@ -46,7 +48,7 @@ const [total, setTotal] = useState(0);
                 }).then(async (result) => {
                   if (result.isConfirmed) {
                     try {
-                      await axios.delete(`${import.meta.env.VITE_API_URL}/cartData/${id}`);
+                      await axiosSecure.delete(`/cartData/${id}`);
                       
                       await Swal.fire({
                         title: "Deleted!",
@@ -146,7 +148,7 @@ const handleFormSubmission = async (e) => {
   };
 
   try {
-    const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/order`, orderData);
+    const { data } = await axiosSecure.post(`/order`, orderData);
     console.log(data);
     toast.success('Order placed successfully!');
     // navigate('/myOrder');

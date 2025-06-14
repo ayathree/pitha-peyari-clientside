@@ -79,9 +79,14 @@ const Registration = () => {
                           userInfo
                       );
                       console.log('User saved to DB:', data);
-              
-            
-            setUser({ ...user, displayName:name })
+                      
+                      
+                      setUser({ ...result?.user, displayName:name })
+                      await axios.post(
+            `${import.meta.env.VITE_API_URL}/jwt`,
+            { email: user?.email },
+            { withCredentials: true }
+        );
                  navigate(from,{replace:true})
                 toast.success('Sign In successfully')
                 setSuccess('Registered Successfully')

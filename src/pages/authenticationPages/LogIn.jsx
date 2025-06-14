@@ -6,11 +6,13 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import { sendPasswordResetEmail } from "firebase/auth";
+import useAuth from "../../hooks/useAuth";
 // import useAdmin from "../../hooks/useAdmin";
 
 
 const LogIn = () => {
     const navigate = useNavigate()
+    const{user}=useAuth()
     const[registerError, setRegisterError]= useState('');
     const emailRef = useRef(null);
     const[success, setSuccess] = useState('');
@@ -61,6 +63,11 @@ const LogIn = () => {
       uid: result.user.uid
     });
     
+    await axios.post(
+            `${import.meta.env.VITE_API_URL}/jwt`,
+            { email: user?.email },
+            { withCredentials: true }
+        );
     if (data.message === 'user exists') {
       toast.success('Welcome back!');
     } else {
@@ -86,6 +93,12 @@ const LogIn = () => {
           
           const result = await signIn(email,password)
           console.log(result)
+          const {data}=await axios.post(
+            `${import.meta.env.VITE_API_URL}/jwt`,
+            { email: user?.email },
+            { withCredentials: true }
+        );
+        console.log(data)
            navigate(from, {replace: true})
           toast.success('Sign In successfully'  )
           setSuccess('Registered Successfully')

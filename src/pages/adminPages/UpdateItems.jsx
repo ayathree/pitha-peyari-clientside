@@ -1,10 +1,12 @@
-import axios from "axios";
+// import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useLoaderData, useNavigate } from "react-router";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const UpdateItems = () => {
     const navigate = useNavigate();
+    const axiosSecure = useAxiosSecure()
     const items = useLoaderData();
     const {_id, title, description, imageUrl, adminEmail, customerSave, fakePrice, mainPrice, totalDiscount} = items || {};
 
@@ -51,8 +53,8 @@ const UpdateItems = () => {
         e.preventDefault();
         
         try {
-            const { data } = await axios.put(
-                `${import.meta.env.VITE_API_URL}/itemData/${_id}`,
+            const { data } = await axiosSecure.put(
+                `/itemData/${_id}`,
                 formData
             );
             console.log(data);

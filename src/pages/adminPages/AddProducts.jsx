@@ -1,12 +1,14 @@
-import axios from "axios";
+// import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
 import { Link } from "react-router";
 import { useEffect, useState } from "react";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 
 const AddProducts = () => {
      const {user}= useAuth()
+     const axiosSecure=useAxiosSecure()
      const [showPrice, setShowPrice] = useState(0);
   const [offerPrice, setOfferPrice] = useState(0);
   const [saveMoney, setSaveMoney] = useState(0);
@@ -44,8 +46,8 @@ const AddProducts = () => {
             console.table(productData)
     
             try{
-                const {data} = await axios.post(
-                    `${import.meta.env.VITE_API_URL}/addItem`, productData
+                const {data} = await axiosSecure.post(
+                    `/addItem`, productData
                 )
                 console.log(data)
                 toast.success("Item's data added successfully")

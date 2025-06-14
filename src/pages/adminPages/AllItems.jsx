@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
-import axios from "axios";
+// import axios from "axios";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 
 const AllItems = () => {
     const{user}=useAuth()
+    const axiosSecure=useAxiosSecure()
     const[items,setItems]=useState([])
     const [isLoading, setIsLoading]= useState([]);
     useEffect(()=>{
@@ -14,7 +16,7 @@ const AllItems = () => {
             getData()
         },[user])
         const getData = async()=>{
-            const {data}= await axios(`${import.meta.env.VITE_API_URL}/itemsData/${user?.email}`)
+            const {data}= await axiosSecure(`/itemsData/${user?.email}`)
             setItems(data)
              setIsLoading(false)
         }
@@ -32,7 +34,7 @@ const AllItems = () => {
           }).then(async (result) => {
             if (result.isConfirmed) {
               try {
-                await axios.delete(`${import.meta.env.VITE_API_URL}/itemData/${id}`);
+                await axiosSecure.delete(`/itemData/${id}`);
                 
                 await Swal.fire({
                   title: "Deleted!",
