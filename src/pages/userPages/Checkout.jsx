@@ -151,6 +151,7 @@ const handleFormSubmission = async (e) => {
     const { data } = await axiosSecure.post(`/order`, orderData);
     console.log(data);
     toast.success('Order placed successfully!');
+    form.reset()
     // navigate('/myOrder');
   } catch (err) {
     console.error('Order failed:', err);

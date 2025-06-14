@@ -154,9 +154,9 @@ const Navbar = () => {
                                 tabIndex={0} 
                                 role="button" 
                                 aria-label="User menu" 
-                                className="font-bold text-yellow-600">
-                                <div className="w-10 rounded-full">
-                                    <p>{user?.displayName}</p>
+                                className="">
+                                <div className="md:w-full btn bg-yellow-600 btn-outline">
+                                    <p className="md:font-bold text-white md:text-xl text-xm capitalize">{user?.displayName}</p>
                                 </div>
                             </button>
                             <ul

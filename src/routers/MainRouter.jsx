@@ -66,7 +66,7 @@ const MainRouter = createBrowserRouter([
             {
                 path:'/updateItem/:id',
                 element:<AdminRouter><UpdateItems></UpdateItems></AdminRouter>,
-                loader:({params})=>fetch(`${import.meta.env.VITE_API_URL}/items/${params.id}`)
+                loader:({params})=>fetch(`${import.meta.env.VITE_API_URL}/items/${params.id}`,{credentials:"include"})
             },
             {
                 path:'/manageOrder',
@@ -75,12 +75,12 @@ const MainRouter = createBrowserRouter([
             {
                 path:'/viewUser/:id',
                 element:<AdminRouter><ViewUser></ViewUser></AdminRouter>,
-                loader:({params})=>fetch(`${import.meta.env.VITE_API_URL}/orderData/${params.id}`)
+                loader:({params})=>fetch(`${import.meta.env.VITE_API_URL}/orderData/${params.id}`, {credentials:"include"})
             },
             {
                 path:'/orderReceipt/:id',
                 element:<AdminRouter><OrderReceipt></OrderReceipt></AdminRouter>,
-                loader:({params})=>fetch(`${import.meta.env.VITE_API_URL}/orderData/${params.id}`)
+                loader:({params})=>fetch(`${import.meta.env.VITE_API_URL}/orderData/${params.id}`, {credentials:"include"})
             },
             {
                 path:'/manageUser',
@@ -105,17 +105,17 @@ const MainRouter = createBrowserRouter([
             {
                 path:'/updateUserOrder/:id',
                 element:<PrivateRouter><UpdateUserOrder></UpdateUserOrder></PrivateRouter>,
-                loader:({params})=>fetch(`${import.meta.env.VITE_API_URL}/orderData/${params.id}`)
+                loader:({params})=>fetch(`${import.meta.env.VITE_API_URL}/orderData/${params.id}`,{credentials:"include"})
             },
             {
                 path:'/itemDetails/:id',
                 element:<ItemDetails></ItemDetails>,
-                loader:({params})=>fetch(`${import.meta.env.VITE_API_URL}/items/${params.id}`)
+                loader:({params})=>fetch(`${import.meta.env.VITE_API_URL}/items/${params.id}`,{credentials:"include"})
             },
             {
                 path:'/categories/:category',
                 element:<Category></Category>,
-                loader:({params})=>fetch(`${import.meta.env.VITE_API_URL}/itemCategory/${params.category}`)
+                loader:({params})=>fetch(`${import.meta.env.VITE_API_URL}/itemCategory/${params.category}`,{credentials:"include"})
             }
         ]
 
